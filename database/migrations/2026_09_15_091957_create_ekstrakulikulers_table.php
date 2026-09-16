@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('ekstrakulikulers', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_ekstrakulikuler');
+            $table->string('pembina');
+            $table->string('jadwal_latihan');
+            $table->text('deskripsi');
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }
