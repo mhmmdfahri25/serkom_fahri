@@ -44,10 +44,13 @@
         <div class="sidebar-menu-title">Menu</div>
         <ul class="sidebar-menu-list">
           <li class="sidebar-menu-item">
-            <a href="index.html" class="sidebar-menu-link" id="menu-overview" title="Overview">
-              <i class="bi bi-grid-fill"></i>
-              <span>Dashboard</span>
-            </a>
+              <a href="{{ url('/dashboard') }}"
+                class="sidebar-menu-link {{ request()->is('dashboard') ? 'active' : '' }}"
+                id="menu-overview"
+                title="Dashboard">
+                  <i class="bi bi-grid-fill"></i>
+                  <span>Dashboard</span>
+              </a>
           </li>
         </ul>
       </div>
@@ -88,9 +91,9 @@
             </a>
           </li>
           <li class="sidebar-menu-item">
-            <a href="{{ route('admin.ekstrakurikuler') }}" class="sidebar-menu-link" id="menu-loginpage" title="Login Page">
+            <a href="{{ route('admin.ekstrakulikuler') }}" class="sidebar-menu-link" id="menu-loginpage" title="Login Page">
               <i class="bi bi-trophy"></i>
-              <span>Kelola Ekstrakurikuler</span>
+              <span>Kelola Ekstrakulikuler</span>
             </a>
           </li>
           <li class="sidebar-menu-item">
