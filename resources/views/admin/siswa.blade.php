@@ -1,4 +1,4 @@
-@extends('admin_app');
+@extends('index');
 
 @section('content')
 <p>Ini adalah halaman siswa</p>

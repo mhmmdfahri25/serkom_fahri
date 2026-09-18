@@ -9,7 +9,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
 
 Route::get('/dashboard', function () {
-    return view('admin.dashboard');
+    return view('index');
 });
 // });
 
