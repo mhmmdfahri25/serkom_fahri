@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sistem Informasi Sekolah</title>
+    <title>SMK YPC TASIKMALAYA | @yield('title')</title>
 
     <meta name="description" content="Sistem Informasi Sekolah">
     <meta name="author" content="Admin Sekolah">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.ico') }}">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('assets/libs/bootstrap/css/bootstrap.min.css') }}">
@@ -72,7 +72,7 @@
 
             <i class="bi bi-building"></i>
 
-            <span>Sistem Informasi Sekolah</span>
+            <span>SMK YPC Tasikmalaya</span>
 
         </a>
 

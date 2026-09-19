@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\siswa;
-use App\Http\Requests\StoresiswaRequest;
-use App\Http\Requests\UpdatesiswaRequest;
+use App\Models\Dashboard;
+use App\Http\Requests\StoreDashboardRequest;
+use App\Http\Requests\UpdateDashboardRequest;
 
-class SiswaController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,19 @@ class SiswaController extends Controller
     public function index()
     {
         //
-           $data = [
-            'title' => 'Siswa'
+         $data = [
+            'title' => 'Dashboard'
         ];
-        return view('admin.siswa', $data);
+        return view('admin.dashboard', $data);
+    }
+
+     public function indexPublic()
+    {
+        //
+         $data = [
+            'title' => 'Dashboard'
+        ];
+        return view('public.dashboard', $data);
     }
 
     /**
@@ -31,7 +40,7 @@ class SiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoresiswaRequest $request)
+    public function store(StoreDashboardRequest $request)
     {
         //
     }
@@ -39,7 +48,7 @@ class SiswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(siswa $siswa)
+    public function show(Dashboard $dashboard)
     {
         //
     }
@@ -47,7 +56,7 @@ class SiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(siswa $siswa)
+    public function edit(Dashboard $dashboard)
     {
         //
     }
@@ -55,7 +64,7 @@ class SiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatesiswaRequest $request, siswa $siswa)
+    public function update(UpdateDashboardRequest $request, Dashboard $dashboard)
     {
         //
     }
@@ -63,7 +72,7 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(siswa $siswa)
+    public function destroy(Dashboard $dashboard)
     {
         //
     }

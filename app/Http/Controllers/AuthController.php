@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\siswa;
-use App\Http\Requests\StoresiswaRequest;
-use App\Http\Requests\UpdatesiswaRequest;
+use App\Models\Auth;
+use Illuminate\Http\Request;
 
-class SiswaController extends Controller
+class AuthController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +13,7 @@ class SiswaController extends Controller
     public function index()
     {
         //
-           $data = [
-            'title' => 'Siswa'
-        ];
-        return view('admin.siswa', $data);
+        return view('admin.login');
     }
 
     /**
@@ -31,15 +27,15 @@ class SiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoresiswaRequest $request)
+    public function store(Request $request)
     {
-        //
+        //       
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(siswa $siswa)
+    public function show(Auth $auth)
     {
         //
     }
@@ -47,7 +43,7 @@ class SiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(siswa $siswa)
+    public function edit(Auth $auth)
     {
         //
     }
@@ -55,7 +51,7 @@ class SiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatesiswaRequest $request, siswa $siswa)
+    public function update(Request $request, Auth $auth)
     {
         //
     }
@@ -63,7 +59,7 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(siswa $siswa)
+    public function destroy(Auth $auth)
     {
         //
     }
