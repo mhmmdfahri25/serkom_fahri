@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ekstrakulikuler extends Model
 {
-    /** @use HasFactory<\Database\Factories\EkstrakulikulerFactory> */
-    use HasFactory;
+    protected $table = 'ekstrakulikuler';
+
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'nama_ekstrakulikuler',
+        'pembina',
+        'jadwal_latihan',
+        'deskripsi',
+        'foto',
+    ];
 }

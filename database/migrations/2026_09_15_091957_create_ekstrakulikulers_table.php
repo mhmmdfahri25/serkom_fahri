@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ekstrakulikulers', function (Blueprint $table) {
+        Schema::create('ekstrakulikuler', function (Blueprint $table) {
             $table->id();
             $table->string('nama_ekstrakulikuler');
             $table->string('pembina');

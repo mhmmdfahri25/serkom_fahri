@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Guru extends Model
 {
-    /** @use HasFactory<\Database\Factories\GuruFactory> */
-    use HasFactory;
+     protected $table = 'guru';
+
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'nama_guru',
+        'nip',
+        'mata_pelajaran',
+        'foto',
+    ];
 }

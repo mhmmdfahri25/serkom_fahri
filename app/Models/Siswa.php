@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Siswa extends Model
 {
-    /** @use HasFactory<\Database\Factories\SiswaFactory> */
-    use HasFactory;
+    protected $table = 'siswa';
+
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'nisn',
+        'nama_siswa',
+        'jenis_kelamin',
+        'tahun_masuk',
+    ];
 }

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profile_sekolahs', function (Blueprint $table) {
-            $table->id();
+        Schema::create('profile_sekolah', function (Blueprint $table) {
+            $table->uuid('id_sekolah')->primary();
             $table->string('nama_sekolah');
             $table->string('kepala_sekolah');
             $table->string('foto')->nullable();
@@ -22,7 +22,6 @@ return new class extends Migration
             $table->text('visi-misi');
             $table->year('tahun_berdiri');
             $table->text('deskripsi');
-            $table->timestamps();
         });
     }
 

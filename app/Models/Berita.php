@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Berita extends Model
 {
-    /** @use HasFactory<\Database\Factories\BeritaFactory> */
-    use HasFactory;
+    protected $table = 'berita';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'judul',
+        'isi',
+        'tanggal',
+        'foto',
+    ];
 }

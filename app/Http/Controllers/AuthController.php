@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -16,6 +16,33 @@ class AuthController extends Controller
         return view('admin.login');
     }
 
+    public function prosesLogin(Request $request)
+    {
+        $credentials =$request->validate(
+            [
+                'email' => 'required|email',
+                'password' => 'required'
+
+            ],
+            [
+                'email.required' => 'Email wajib di isi.',
+                'email.email' => 'Email wajib tidak valid',
+                'password.required' => 'Password wajib di isi'
+            ]
+        );
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        return back()->withError(
+            [
+                'Email' => 'Kombinasi alamat email atau kata sandi tidak sesuai',
+            ]
+        )->onlyInput('email');
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -29,7 +56,7 @@ class AuthController extends Controller
      */
     public function store(Request $request)
     {
-        //       
+        //
     }
 
     /**
@@ -62,5 +89,12 @@ class AuthController extends Controller
     public function destroy(Auth $auth)
     {
         //
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
 }
