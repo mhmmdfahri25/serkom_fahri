@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Galeri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class GaleriController extends Controller
 {
@@ -23,84 +24,72 @@ class GaleriController extends Controller
 
         $galeris = $query->orderBy('id', 'desc')->get();
 
-        return view('admin.galeri.galeri', [
+        return view('admin.galeri.index', [
             'title' => 'Galeri',
             'galeris' => $galeris,
         ]);
     }
 
-    public function create()
+    public function addEdit($id = null)
     {
-        return view('admin.galeri.tambah', [
-            'title' => 'Tambah Galeri'
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'keterangan' => 'required|string',
-            'kategori' => 'required|in:foto,video',
-            'tanggal' => 'required|date',
-            'foto' => 'required|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi,mkv|max:20480',
-        ]);
-
-        $fileName = null;
-
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-
-            $fileName = time() . '_' . $file->getClientOriginalName();
-
-            $folder = public_path('uploads/galeri');
-
-            if (!file_exists($folder)) {
-                mkdir($folder, 0755, true);
-            }
-
-            $file->move($folder, $fileName);
+        try {
+            $galeri = $id
+                ? Galeri::findOrFail(Crypt::decrypt($id))
+                : null;
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.galeri')
+                ->with('error', 'Data galeri tidak ditemukan.');
         }
 
-        Galeri::create([
-            'judul' => $request->judul,
-            'keterangan' => $request->keterangan,
-            'foto' => $fileName,
-            'kategori' => $request->kategori,
-            'tanggal' => $request->tanggal,
-        ]);
-
-        return redirect()
-            ->route('admin.galeri')
-            ->with('success', 'Data galeri berhasil ditambahkan.');
-    }
-
-    public function edit($id)
-    {
-        $galeri = Galeri::findOrFail($id);
-
-        return view('admin.galeri.edit', [
-            'title' => 'Edit Galeri',
+        return view('admin.galeri.form', [
+            'title' => $galeri ? 'Edit Galeri' : 'Tambah Galeri',
             'galeri' => $galeri,
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function save(Request $request, $id = null)
     {
+        if ($id) {
+            try {
+                $id = Crypt::decrypt($id);
+                $galeri = Galeri::findOrFail($id);
+            } catch (\Exception $e) {
+                return redirect()
+                    ->route('admin.galeri')
+                    ->with('error', 'Data galeri tidak ditemukan.');
+            }
+        } else {
+            $galeri = new Galeri();
+        }
+
         $request->validate([
             'judul' => 'required|string|max:255',
             'keterangan' => 'required|string',
             'kategori' => 'required|in:foto,video',
             'tanggal' => 'required|date',
-            'foto' => 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi,mkv|max:20480',
+            'foto' => $id
+                ? 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi,mkv|max:20480'
+                : 'required|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi,mkv|max:20480',
+        ], [
+            'judul.required' => 'Judul galeri wajib diisi.',
+            'keterangan.required' => 'Keterangan wajib diisi.',
+            'kategori.required' => 'Kategori wajib dipilih.',
+            'kategori.in' => 'Kategori harus berupa foto atau video.',
+            'tanggal.required' => 'Tanggal wajib diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'foto.required' => 'File foto atau video wajib diupload.',
+            'foto.file' => 'File yang diupload tidak valid.',
+            'foto.mimes' => 'File harus berupa JPG, JPEG, PNG, WEBP, MP4, MOV, AVI, atau MKV.',
+            'foto.max' => 'Ukuran file maksimal 20MB.',
         ]);
 
-        $galeri = Galeri::findOrFail($id);
-
-        $fileName = $galeri->foto;
+        $galeri->judul = $request->judul;
+        $galeri->keterangan = $request->keterangan;
+        $galeri->kategori = $request->kategori;
+        $galeri->tanggal = $request->tanggal;
 
         if ($request->hasFile('foto')) {
-
             if (
                 $galeri->foto &&
                 file_exists(public_path('uploads/galeri/' . $galeri->foto))
@@ -109,7 +98,6 @@ class GaleriController extends Controller
             }
 
             $file = $request->file('foto');
-
             $fileName = time() . '_' . $file->getClientOriginalName();
 
             $folder = public_path('uploads/galeri');
@@ -119,24 +107,47 @@ class GaleriController extends Controller
             }
 
             $file->move($folder, $fileName);
+
+            $galeri->foto = $fileName;
         }
 
-        $galeri->update([
-            'judul' => $request->judul,
-            'keterangan' => $request->keterangan,
-            'foto' => $fileName,
-            'kategori' => $request->kategori,
-            'tanggal' => $request->tanggal,
-        ]);
+        $galeri->save();
 
         return redirect()
             ->route('admin.galeri')
-            ->with('success', 'Data galeri berhasil diperbarui.');
+            ->with(
+                'success',
+                $id
+                    ? 'Data galeri berhasil diperbarui.'
+                    : 'Data galeri berhasil ditambahkan.'
+            );
+    }
+
+    public function show($id)
+    {
+        try {
+            $galeri = Galeri::findOrFail(Crypt::decrypt($id));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.galeri')
+                ->with('error', 'Data galeri tidak ditemukan.');
+        }
+
+        return view('admin.galeri.show', [
+            'title' => 'Detail Galeri',
+            'galeri' => $galeri,
+        ]);
     }
 
     public function destroy($id)
     {
-        $galeri = Galeri::findOrFail($id);
+        try {
+            $galeri = Galeri::findOrFail(Crypt::decrypt($id));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.galeri')
+                ->with('error', 'Data galeri tidak ditemukan.');
+        }
 
         if (
             $galeri->foto &&
@@ -150,5 +161,12 @@ class GaleriController extends Controller
         return redirect()
             ->route('admin.galeri')
             ->with('success', 'Data galeri berhasil dihapus.');
+    }
+
+    public function publicGaleri()
+    {
+        $galeris = Galeri::orderBy('id', 'desc')->get();
+
+        return view('public.galeri', compact('galeris'));
     }
 }

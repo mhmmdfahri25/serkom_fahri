@@ -4,109 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class GuruController extends Controller
 {
-    // Tampilkan data guru
-    public function index(Request $request)
+    public function index()
     {
-        $query = Guru::query();
+        $guru = Guru::latest()->get();
 
-        // Pencarian
-        if ($request->filled('search')) {
-            $search = $request->search;
+        return view('admin.guru.index', compact('guru'));
+    }
 
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_guru', 'like', '%' . $search . '%')
-                    ->orWhere('nip', 'like', '%' . $search . '%')
-                    ->orWhere('mata_pelajaran', 'like', '%' . $search . '%');
-            });
+    public function addEdit($id = null)
+    {
+        try {
+            $guru = $id
+                ? Guru::findOrFail(Crypt::decrypt($id))
+                : null;
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.guru.index')
+                ->with('error', 'Data guru tidak ditemukan.');
         }
 
-        $gurus = $query
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return view('admin.guru.guru', [
-            'title' => 'Data Guru',
-            'gurus' => $gurus,
-        ]);
+        return view('admin.guru.form', compact('guru'));
     }
 
-    // Form tambah guru
-    public function create()
+    public function save(Request $request, $id = null)
     {
-        return view('admin.guru.tambah', [
-            'title' => 'Tambah Guru',
-        ]);
-    }
-
-    // Simpan guru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama_guru' => 'required|string|max:255',
-            'nip' => 'required|string|max:255',
-            'mata_pelajaran' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-        ]);
-
-        $namaFoto = null;
-
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-
-            $namaFoto = time() . '_' . $foto->getClientOriginalName();
-
-            $folder = public_path('uploads/guru');
-
-            if (!file_exists($folder)) {
-                mkdir($folder, 0755, true);
+        if ($id) {
+            try {
+                $id = Crypt::decrypt($id);
+                $guru = Guru::findOrFail($id);
+            } catch (\Exception $e) {
+                return redirect()
+                    ->route('admin.guru.index')
+                    ->with('error', 'Data guru tidak ditemukan.');
             }
-
-            $foto->move($folder, $namaFoto);
+        } else {
+            $guru = new Guru();
         }
 
-        Guru::create([
-            'nama_guru' => $request->nama_guru,
-            'nip' => $request->nip,
-            'mata_pelajaran' => $request->mata_pelajaran,
-            'foto' => $namaFoto,
-        ]);
-
-        return redirect()
-            ->route('admin.guru')
-            ->with('success', 'Data guru berhasil ditambahkan.');
-    }
-
-    // Form edit
-    public function edit($id)
-    {
-        $guru = Guru::findOrFail($id);
-
-        return view('admin.guru.edit', [
-            'title' => 'Edit Guru',
-            'guru' => $guru,
-        ]);
-    }
-
-    // Update guru
-    public function update(Request $request, $id)
-    {
         $request->validate([
             'nama_guru' => 'required|string|max:255',
-            'nip' => 'required|string|max:255',
+            'nip' => 'required|string|max:255|unique:guru,nip,' . ($id ?? 'NULL') . ',id',
             'mata_pelajaran' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ], [
+            'nama_guru.required' => 'Nama guru wajib diisi.',
+            'nip.required' => 'NIP wajib diisi.',
+            'nip.unique' => 'NIP sudah terdaftar pada guru lain.',
+            'mata_pelajaran.required' => 'Mata pelajaran wajib diisi.',
+            'foto.image' => 'Foto harus berupa file gambar.',
+            'foto.max' => 'Ukuran foto maksimal 5MB.',
         ]);
 
-        $guru = Guru::findOrFail($id);
-
-        $namaFoto = $guru->foto;
+        $guru->nama_guru = $request->nama_guru;
+        $guru->nip = $request->nip;
+        $guru->mata_pelajaran = $request->mata_pelajaran;
 
         if ($request->hasFile('foto')) {
-
-            // Hapus foto lama
             if (
                 $guru->foto &&
                 file_exists(public_path('uploads/guru/' . $guru->foto))
@@ -115,7 +72,6 @@ class GuruController extends Controller
             }
 
             $foto = $request->file('foto');
-
             $namaFoto = time() . '_' . $foto->getClientOriginalName();
 
             $folder = public_path('uploads/guru');
@@ -125,26 +81,45 @@ class GuruController extends Controller
             }
 
             $foto->move($folder, $namaFoto);
+
+            $guru->foto = $namaFoto;
         }
 
-        $guru->update([
-            'nama_guru' => $request->nama_guru,
-            'nip' => $request->nip,
-            'mata_pelajaran' => $request->mata_pelajaran,
-            'foto' => $namaFoto,
-        ]);
+        $guru->save();
 
         return redirect()
-            ->route('admin.guru')
-            ->with('success', 'Data guru berhasil diperbarui.');
+            ->route('admin.guru.index')
+            ->with(
+                'success',
+                $id
+                    ? 'Data guru berhasil diperbarui.'
+                    : 'Data guru berhasil disimpan.'
+            );
     }
 
-    // Hapus guru
+    public function show($id)
+    {
+        try {
+            $guru = Guru::findOrFail(Crypt::decrypt($id));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.guru.index')
+                ->with('error', 'Data guru tidak ditemukan.');
+        }
+
+        return view('admin.guru.show', compact('guru'));
+    }
+
     public function destroy($id)
     {
-        $guru = Guru::findOrFail($id);
+        try {
+            $guru = Guru::findOrFail(Crypt::decrypt($id));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.guru.index')
+                ->with('error', 'Data guru tidak ditemukan.');
+        }
 
-        // Hapus foto
         if (
             $guru->foto &&
             file_exists(public_path('uploads/guru/' . $guru->foto))
@@ -155,7 +130,14 @@ class GuruController extends Controller
         $guru->delete();
 
         return redirect()
-            ->route('admin.guru')
+            ->route('admin.guru.index')
             ->with('success', 'Data guru berhasil dihapus.');
+    }
+
+    public function publicGuru()
+    {
+        $guru = Guru::all();
+
+        return view('public.guru', compact('guru'));
     }
 }

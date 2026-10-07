@@ -1,708 +1,389 @@
-@extends('index')
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
 
 @section('content')
 
-{{-- =========================================================
-     HEADER DASHBOARD
-========================================================= --}}
-
+{{-- HEADER --}}
 <div class="row">
-
     <div class="col-12">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body py-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <span class="badge badge-primary mb-2">
+                            <i class="mdi mdi-view-dashboard mr-1"></i>
+                            ADMIN PANEL
+                        </span>
 
-        <div class="card mb-4">
-
-            <div class="card-body">
-
-                <div class="row align-items-center">
-
-                    <div class="col-md-8">
-
-                        <h3 class="font-weight-bold mb-2">
-
-                            Selamat Datang,
-                            {{ session('admin_nama') }}
-
+                        <h3 class="font-weight-bold mb-1">
+                            Dashboard
                         </h3>
 
                         <p class="text-muted mb-0">
-
-                            Selamat datang di Dashboard
-                            SMAN 1 SAMRINDA.
-
+                            Selamat datang di panel administrasi
+                            <strong>SMAN 1 SAMARINDA</strong>.
                         </p>
-
                     </div>
 
-                    <div class="col-md-4 text-md-right mt-3 mt-md-0">
-
-                        <span class="badge badge-gradient-primary p-2">
-
-                            <i class="mdi mdi-shield-account mr-1"></i>
-
-                            Administrator
-
-                        </span>
-
+                    <div class="mt-3 mt-md-0">
+                        <a href="{{ route('public.dashboard') }}"
+                           target="_blank"
+                           class="btn btn-outline-primary">
+                            <i class="mdi mdi-web mr-1"></i>
+                            Lihat Website
+                        </a>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 
-{{-- =========================================================
-     STATISTIK
-========================================================= --}}
-
+{{-- STATISTIK UTAMA --}}
 <div class="row">
 
     {{-- GURU --}}
-
-    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
-
-        <div class="card">
-
+    <div class="col-md-6 col-xl-3 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
 
                 <div class="d-flex justify-content-between align-items-start">
-
                     <div>
-
                         <p class="text-muted mb-2">
                             Total Guru
                         </p>
 
-                        <h3 class="font-weight-bold mb-0">
-
+                        <h2 class="font-weight-bold mb-1">
                             {{ $jumlahGuru }}
+                        </h2>
 
-                        </h3>
-
+                        <small class="text-primary">
+                            Data tenaga pengajar
+                        </small>
                     </div>
 
-                    <div class="p-3 rounded bg-primary">
-
-                        <i class="mdi mdi-account-tie text-white"
-                           style="font-size: 24px;"></i>
-
+                    <div class="icon icon-box-primary">
+                        <i class="mdi mdi-account-tie mdi-36px"></i>
                     </div>
-
                 </div>
 
-                <div class="mt-3">
-
-                    <a href="{{ route('admin.guru') }}"
-                       class="text-primary">
-
+                <div class="mt-4">
+                    <a href="{{ route('admin.guru.index') }}"
+                       class="btn btn-sm btn-outline-primary">
                         Kelola Guru
                         <i class="mdi mdi-arrow-right ml-1"></i>
-
                     </a>
-
                 </div>
 
             </div>
-
         </div>
-
     </div>
 
 
     {{-- SISWA --}}
-
-    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
-
-        <div class="card">
-
+    <div class="col-md-6 col-xl-3 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
 
                 <div class="d-flex justify-content-between align-items-start">
-
                     <div>
-
                         <p class="text-muted mb-2">
                             Total Siswa
                         </p>
 
-                        <h3 class="font-weight-bold mb-0">
-
+                        <h2 class="font-weight-bold mb-1">
                             {{ $jumlahSiswa }}
+                        </h2>
 
-                        </h3>
-
+                        <small class="text-info">
+                            Data peserta didik
+                        </small>
                     </div>
 
-                    <div class="p-3 rounded bg-success">
-
-                        <i class="mdi mdi-account-group text-white"
-                           style="font-size: 24px;"></i>
-
+                    <div class="icon icon-box-info">
+                        <i class="mdi mdi-account-group mdi-36px"></i>
                     </div>
-
                 </div>
 
-                <div class="mt-3">
-
-                    <a href="{{ route('admin.siswa') }}"
-                       class="text-success">
-
+                <div class="mt-4">
+                    <a href="{{ route('admin.siswa.index') }}"
+                       class="btn btn-sm btn-outline-info">
                         Kelola Siswa
                         <i class="mdi mdi-arrow-right ml-1"></i>
-
                     </a>
-
                 </div>
 
             </div>
-
         </div>
-
     </div>
 
 
     {{-- BERITA --}}
-
-    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
-
-        <div class="card">
-
+    <div class="col-md-6 col-xl-3 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
 
                 <div class="d-flex justify-content-between align-items-start">
-
                     <div>
-
                         <p class="text-muted mb-2">
                             Total Berita
                         </p>
 
-                        <h3 class="font-weight-bold mb-0">
-
+                        <h2 class="font-weight-bold mb-1">
                             {{ $jumlahBerita }}
+                        </h2>
 
-                        </h3>
-
+                        <small class="text-warning">
+                            Publikasi sekolah
+                        </small>
                     </div>
 
-                    <div class="p-3 rounded bg-warning">
-
-                        <i class="mdi mdi-newspaper text-white"
-                           style="font-size: 24px;"></i>
-
+                    <div class="icon icon-box-warning">
+                        <i class="mdi mdi-newspaper mdi-36px"></i>
                     </div>
-
                 </div>
 
-                <div class="mt-3">
-
+                <div class="mt-4">
                     <a href="{{ route('admin.berita') }}"
-                       class="text-warning">
-
+                       class="btn btn-sm btn-outline-warning">
                         Kelola Berita
                         <i class="mdi mdi-arrow-right ml-1"></i>
-
                     </a>
-
                 </div>
 
             </div>
-
         </div>
-
-    </div>
-
-
-    {{-- EKSTRAKULIKULER --}}
-
-    <div class="col-xl-3 col-md-6 grid-margin stretch-card">
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-start">
-
-                    <div>
-
-                        <p class="text-muted mb-2">
-                            Ekstrakulikuler
-                        </p>
-
-                        <h3 class="font-weight-bold mb-0">
-
-                            {{ $jumlahEkstrakulikuler }}
-
-                        </h3>
-
-                    </div>
-
-                    <div class="p-3 rounded bg-danger">
-
-                        <i class="mdi mdi-soccer text-white"
-                           style="font-size: 24px;"></i>
-
-                    </div>
-
-                </div>
-
-                <div class="mt-3">
-
-                    {{-- ROUTE SUDAH DIPERBAIKI --}}
-
-                    <a href="{{ route('admin.ekstrakulikuler') }}"
-                       class="text-danger">
-
-                        Kelola Ekstrakulikuler
-                        <i class="mdi mdi-arrow-right ml-1"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-{{-- =========================================================
-     PROFILE SEKOLAH + GALERI
-========================================================= --}}
-
-<div class="row">
-
-    {{-- PROFILE SEKOLAH --}}
-
-    <div class="col-lg-8 grid-margin stretch-card">
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-
-                    <div>
-
-                        <h4 class="card-title mb-1">
-
-                            <i class="mdi mdi-school text-primary mr-2"></i>
-
-                            Profile Sekolah
-
-                        </h4>
-
-                        <p class="text-muted mb-0">
-
-                            Informasi singkat sekolah
-
-                        </p>
-
-                    </div>
-
-                    <a href="{{ route('admin.profile') }}"
-                       class="btn btn-sm btn-outline-primary">
-
-                        Lihat Profile
-
-                    </a>
-
-                </div>
-
-
-                @if($sekolah)
-
-                    <div class="row align-items-center">
-
-                        {{-- LOGO --}}
-
-                        <div class="col-md-3 text-center mb-3 mb-md-0">
-
-                            @if($sekolah->logo)
-
-                                <img
-                                    src="{{ asset('uploads/sekolah/' . $sekolah->logo) }}"
-                                    alt="Logo Sekolah"
-                                    class="img-fluid"
-                                    width="110"
-                                >
-
-                            @else
-
-                                <img
-                                    src="{{ asset('assets/images/logosma5.png') }}"
-                                    alt="Logo Sekolah"
-                                    class="img-fluid"
-                                    width="110"
-                                >
-
-                            @endif
-
-                        </div>
-
-
-                        {{-- INFORMASI --}}
-
-                        <div class="col-md-9">
-
-                            <h4 class="font-weight-bold">
-
-                                {{ $sekolah->nama_sekolah }}
-
-                            </h4>
-
-                            <p class="text-muted mb-3">
-
-                                <i class="mdi mdi-account-tie mr-1"></i>
-
-                                Kepala Sekolah:
-                                {{ $sekolah->kepala_sekolah }}
-
-                            </p>
-
-                            <p class="text-muted mb-2">
-
-                                <i class="mdi mdi-map-marker-outline mr-1"></i>
-
-                                {{ $sekolah->alamat }}
-
-                            </p>
-
-                            <p class="text-muted mb-0">
-
-                                <i class="mdi mdi-phone-outline mr-1"></i>
-
-                                {{ $sekolah->kontak }}
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                @else
-
-                    <div class="text-center py-4">
-
-                        <i class="mdi mdi-school-outline text-muted"
-                           style="font-size: 45px;"></i>
-
-                        <p class="text-muted mt-2">
-
-                            Data profile sekolah belum tersedia.
-
-                        </p>
-
-                        <a href="{{ route('admin.profile') }}"
-                           class="btn btn-gradient-primary">
-
-                            Tambah Profile
-
-                        </a>
-
-                    </div>
-
-                @endif
-
-            </div>
-
-        </div>
-
     </div>
 
 
     {{-- GALERI --}}
-
-    <div class="col-lg-4 grid-margin stretch-card">
-
-        <div class="card">
-
+    <div class="col-md-6 col-xl-3 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
 
-                <h4 class="card-title mb-1">
-
-                    <i class="mdi mdi-image-multiple text-primary mr-2"></i>
-
-                    Galeri
-
-                </h4>
-
-                <p class="text-muted">
-
-                    Dokumentasi sekolah
-
-                </p>
-
-                <div class="text-center py-3">
-
-                    <i class="mdi mdi-image-multiple-outline text-primary"
-                       style="font-size: 55px;"></i>
-
-                    <h2 class="font-weight-bold mt-3">
-
-                        {{ $jumlahGaleri }}
-
-                    </h2>
-
-                    <p class="text-muted">
-
-                        Koleksi Galeri
-
-                    </p>
-
-                    <a href="{{ route('admin.galeri') }}"
-                       class="btn btn-sm btn-gradient-primary">
-
-                        Lihat Galeri
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-{{-- =========================================================
-     MENU CEPAT
-========================================================= --}}
-
-<div class="row">
-
-    <div class="col-12 grid-margin stretch-card">
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <h4 class="card-title mb-1">
-
-                    <i class="mdi mdi-lightning-bolt text-primary mr-2"></i>
-
-                    Akses Cepat
-
-                </h4>
-
-                <p class="text-muted mb-4">
-
-                    Akses menu administrasi sekolah
-
-                </p>
-
-
-                <div class="row">
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <a href="{{ route('admin.guru') }}"
-                           class="btn btn-outline-primary btn-block">
-
-                            <i class="mdi mdi-account-tie mr-1"></i>
-
-                            Kelola Guru
-
-                        </a>
-
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <a href="{{ route('admin.siswa') }}"
-                           class="btn btn-outline-success btn-block">
-
-                            <i class="mdi mdi-account-group mr-1"></i>
-
-                            Kelola Siswa
-
-                        </a>
-
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <a href="{{ route('admin.berita') }}"
-                           class="btn btn-outline-warning btn-block">
-
-                            <i class="mdi mdi-newspaper mr-1"></i>
-
-                            Kelola Berita
-
-                        </a>
-
-                    </div>
-
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-
-                        <a href="{{ route('admin.galeri') }}"
-                           class="btn btn-outline-danger btn-block">
-
-                            <i class="mdi mdi-image-multiple mr-1"></i>
-
-                            Kelola Galeri
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-{{-- =========================================================
-     BERITA TERBARU
-========================================================= --}}
-
-<div class="row">
-
-    <div class="col-12 grid-margin stretch-card">
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-
+                <div class="d-flex justify-content-between align-items-start">
                     <div>
-
-                        <h4 class="card-title mb-1">
-
-                            <i class="mdi mdi-newspaper-variant text-primary mr-2"></i>
-
-                            Berita Terbaru
-
-                        </h4>
-
-                        <p class="text-muted mb-0">
-
-                            Informasi terbaru sekolah
-
+                        <p class="text-muted mb-2">
+                            Total Galeri
                         </p>
 
+                        <h2 class="font-weight-bold mb-1">
+                            {{ $jumlahGaleri }}
+                        </h2>
+
+                        <small class="text-danger">
+                            Dokumentasi sekolah
+                        </small>
+                    </div>
+
+                    <div class="icon icon-box-danger">
+                        <i class="mdi mdi-image-multiple mdi-36px"></i>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ route('admin.galeri') }}"
+                       class="btn btn-sm btn-outline-danger">
+                        Kelola Galeri
+                        <i class="mdi mdi-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{{-- STATISTIK TAMBAHAN --}}
+<div class="row">
+
+    {{-- EKSTRAKULIKULER --}}
+    <div class="col-md-6 col-xl-6 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">
+                            Ekstrakulikuler
+                        </p>
+
+                        <h3 class="font-weight-bold mb-1">
+                            {{ $jumlahEkstrakulikuler }}
+                        </h3>
+
+                        <small class="text-success">
+                            Kegiatan pengembangan siswa
+                        </small>
+                    </div>
+
+                    <div class="icon icon-box-success">
+                        <i class="mdi mdi-run mdi-36px"></i>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a href="{{ route('admin.ekstrakulikuler') }}"
+                       class="btn btn-sm btn-outline-success">
+                        Kelola Ekstrakulikuler
+                        <i class="mdi mdi-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    {{-- PROFIL SEKOLAH --}}
+    <div class="col-md-6 col-xl-6 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <p class="text-muted mb-1">
+                            Profil Sekolah
+                        </p>
+
+                        <h3 class="font-weight-bold mb-1">
+                            {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}
+                        </h3>
+
+                        <small class="text-primary">
+                            Informasi identitas sekolah
+                        </small>
+                    </div>
+
+                    <div class="text-center ml-3">
+
+                        @if($sekolah && $sekolah->logo)
+
+                            <img src="{{ asset('uploads/sekolah/' . $sekolah->logo) }}"
+                                 alt="Logo Sekolah"
+                                 style="width:95px;height:95px;object-fit:contain;">
+
+                        @else
+
+                            <img src="{{ asset('assets/images/logosma5.png') }}"
+                                 alt="Logo Sekolah"
+                                 style="width:95px;height:95px;object-fit:contain;">
+
+                        @endif
+
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <a href="{{ route('admin.profil-sekolah') }}"
+                       class="btn btn-sm btn-outline-primary">
+                        Kelola Profil
+                        <i class="mdi mdi-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{{-- BERITA TERBARU --}}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <div>
+                        <h4 class="card-title mb-1">
+                            Berita Terbaru
+                        </h4>
+
+                        <small class="text-muted">
+                            Informasi terbaru sekolah
+                        </small>
                     </div>
 
                     <a href="{{ route('admin.berita') }}"
                        class="btn btn-sm btn-outline-primary">
-
-                        Semua Berita
-
+                        Semua
                     </a>
 
                 </div>
 
 
-                @if($beritaTerbaru->count() > 0)
+                @if($beritaTerbaru && $beritaTerbaru->count() > 0)
 
-                    <div class="table-responsive">
+                    @foreach($beritaTerbaru as $berita)
 
-                        <table class="table table-hover">
+                        <div class="d-flex align-items-center border-bottom py-2">
 
-                            <thead>
+                            <div class="mr-3 flex-shrink-0">
 
-                                <tr>
+                                @if($berita->foto)
 
-                                    <th>
-                                        #
-                                    </th>
+                                    <img src="{{ asset('uploads/berita/' . $berita->foto) }}"
+                                         alt="{{ $berita->judul }}"
+                                         class="rounded"
+                                         style="width:65px;height:50px;object-fit:cover;">
 
-                                    <th>
-                                        Judul Berita
-                                    </th>
+                                @else
 
-                                    <th>
-                                        Tanggal
-                                    </th>
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                         style="width:65px;height:50px;">
 
-                                    <th class="text-right">
-                                        Status
-                                    </th>
+                                        <i class="mdi mdi-newspaper text-muted"></i>
 
-                                </tr>
+                                    </div>
 
-                            </thead>
+                                @endif
 
-                            <tbody>
+                            </div>
 
-                                @foreach($beritaTerbaru as $index => $berita)
 
-                                    <tr>
+                            <div class="flex-grow-1 overflow-hidden">
 
-                                        <td>
-                                            {{ $index + 1 }}
-                                        </td>
+                                <h6 class="font-weight-bold mb-1 text-truncate">
+                                    {{ $berita->judul }}
+                                </h6>
 
-                                        <td>
+                                <p class="text-muted small mb-0 text-truncate">
+                                    {{ strip_tags($berita->isi) }}
+                                </p>
 
-                                            <strong>
+                            </div>
 
-                                                {{ $berita->judul }}
 
-                                            </strong>
+                            <div class="ml-3 text-right flex-shrink-0">
 
-                                        </td>
+                                <small class="text-muted">
+                                    <i class="mdi mdi-calendar-outline"></i>
+                                    {{ $berita->tanggal }}
+                                </small>
 
-                                        <td>
+                            </div>
 
-                                            {{ $berita->created_at
-                                                ? $berita->created_at->format('d M Y')
-                                                : '-' }}
+                        </div>
 
-                                        </td>
-
-                                        <td class="text-right">
-
-                                            <span class="badge badge-success">
-
-                                                Aktif
-
-                                            </span>
-
-                                        </td>
-
-                                    </tr>
-
-                                @endforeach
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
+                    @endforeach
 
                 @else
 
                     <div class="text-center py-4">
 
-                        <i class="mdi mdi-newspaper-variant-outline text-muted"
-                           style="font-size: 45px;"></i>
+                        <i class="mdi mdi-newspaper-outline mdi-36px text-muted"></i>
 
-                        <p class="text-muted mt-2 mb-0">
-
+                        <p class="text-muted mb-0 mt-2">
                             Belum ada berita.
-
                         </p>
 
                     </div>
@@ -710,11 +391,8 @@
                 @endif
 
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 @endsection

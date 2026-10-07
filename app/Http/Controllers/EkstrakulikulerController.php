@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ekstrakulikuler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class EkstrakulikulerController extends Controller
 {
@@ -24,36 +25,73 @@ class EkstrakulikulerController extends Controller
 
         $ekstrakulikulers = $query->orderBy('id', 'desc')->get();
 
-        return view('admin.ekstrakulikuler.ekstrakulikuler', [
+        return view('admin.ekstrakulikuler.index', [
             'title' => 'Ekstrakulikuler',
-            'ekstrakulikulers' => $ekstrakulikulers,
+            'ekstrakulikulers' => $ekstrakulikulers
         ]);
     }
 
-    public function create()
+    public function addEdit($id = null)
     {
-        return view('admin.ekstrakulikuler.tambah', [
-            'title' => 'Tambah Ekstrakulikuler'
+        try {
+            $ekstrakulikuler = $id
+                ? Ekstrakulikuler::findOrFail(Crypt::decrypt($id))
+                : null;
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.ekstrakulikuler')
+                ->with('error', 'Data ekstrakulikuler tidak ditemukan.');
+        }
+
+        return view('admin.ekstrakulikuler.form', [
+            'title' => $ekstrakulikuler ? 'Edit Ekstrakulikuler' : 'Tambah Ekstrakulikuler',
+            'ekstrakulikuler' => $ekstrakulikuler
         ]);
     }
 
-    public function store(Request $request)
+    public function save(Request $request, $id = null)
     {
+        if ($id) {
+            try {
+                $id = Crypt::decrypt($id);
+                $ekstrakulikuler = Ekstrakulikuler::findOrFail($id);
+            } catch (\Exception $e) {
+                return redirect()
+                    ->route('admin.ekstrakulikuler')
+                    ->with('error', 'Data ekstrakulikuler tidak ditemukan.');
+            }
+        } else {
+            $ekstrakulikuler = new Ekstrakulikuler();
+        }
+
         $request->validate([
             'nama_ekstrakulikuler' => 'required|string|max:255',
             'pembina' => 'required|string|max:255',
             'jadwal_latihan' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ], [
+            'nama_ekstrakulikuler.required' => 'Nama ekstrakulikuler wajib diisi.',
+            'pembina.required' => 'Nama pembina wajib diisi.',
+            'jadwal_latihan.required' => 'Jadwal latihan wajib diisi.',
+            'deskripsi.required' => 'Deskripsi wajib diisi.',
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Foto harus JPG, JPEG, PNG, atau WEBP.',
+            'foto.max' => 'Ukuran foto maksimal 5MB.',
         ]);
 
-        $namaFoto = null;
+        $ekstrakulikuler->nama_ekstrakulikuler = $request->nama_ekstrakulikuler;
+        $ekstrakulikuler->pembina = $request->pembina;
+        $ekstrakulikuler->jadwal_latihan = $request->jadwal_latihan;
+        $ekstrakulikuler->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('foto')) {
+            if ($ekstrakulikuler->foto && file_exists(public_path('uploads/ekstrakulikuler/' . $ekstrakulikuler->foto))) {
+                unlink(public_path('uploads/ekstrakulikuler/' . $ekstrakulikuler->foto));
+            }
+
             $foto = $request->file('foto');
-
             $namaFoto = time() . '_' . $foto->getClientOriginalName();
-
             $folder = public_path('uploads/ekstrakulikuler');
 
             if (!file_exists($folder)) {
@@ -61,109 +99,49 @@ class EkstrakulikulerController extends Controller
             }
 
             $foto->move($folder, $namaFoto);
+            $ekstrakulikuler->foto = $namaFoto;
         }
 
-        Ekstrakulikuler::create([
-            'nama_ekstrakulikuler' => $request->nama_ekstrakulikuler,
-            'pembina' => $request->pembina,
-            'jadwal_latihan' => $request->jadwal_latihan,
-            'deskripsi' => $request->deskripsi,
-            'foto' => $namaFoto,
-        ]);
+        $ekstrakulikuler->save();
 
         return redirect()
             ->route('admin.ekstrakulikuler')
-            ->with('success', 'Data ekstrakulikuler berhasil ditambahkan.');
+            ->with(
+                'success',
+                $id
+                    ? 'Data ekstrakulikuler berhasil diperbarui.'
+                    : 'Data ekstrakulikuler berhasil ditambahkan.'
+            );
     }
 
-    public function edit($id)
+    public function show($id)
     {
-        $ekstrakulikuler = Ekstrakulikuler::findOrFail($id);
-
-        return view('admin.ekstrakulikuler.edit', [
-            'title' => 'Edit Ekstrakulikuler',
-            'ekstrakulikuler' => $ekstrakulikuler,
-        ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nama_ekstrakulikuler' => 'required|string|max:255',
-            'pembina' => 'required|string|max:255',
-            'jadwal_latihan' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
-        ]);
-
-        $ekstrakulikuler = Ekstrakulikuler::findOrFail($id);
-
-        $namaFoto = $ekstrakulikuler->foto;
-
-        if ($request->hasFile('foto')) {
-
-            if (
-                $ekstrakulikuler->foto &&
-                file_exists(
-                    public_path(
-                        'uploads/ekstrakulikuler/' .
-                        $ekstrakulikuler->foto
-                    )
-                )
-            ) {
-                unlink(
-                    public_path(
-                        'uploads/ekstrakulikuler/' .
-                        $ekstrakulikuler->foto
-                    )
-                );
-            }
-
-            $foto = $request->file('foto');
-
-            $namaFoto = time() . '_' . $foto->getClientOriginalName();
-
-            $folder = public_path('uploads/ekstrakulikuler');
-
-            if (!file_exists($folder)) {
-                mkdir($folder, 0755, true);
-            }
-
-            $foto->move($folder, $namaFoto);
+        try {
+            $ekstrakulikuler = Ekstrakulikuler::findOrFail(Crypt::decrypt($id));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.ekstrakulikuler')
+                ->with('error', 'Data ekstrakulikuler tidak ditemukan.');
         }
 
-        $ekstrakulikuler->update([
-            'nama_ekstrakulikuler' => $request->nama_ekstrakulikuler,
-            'pembina' => $request->pembina,
-            'jadwal_latihan' => $request->jadwal_latihan,
-            'deskripsi' => $request->deskripsi,
-            'foto' => $namaFoto,
+        return view('admin.ekstrakulikuler.show', [
+            'title' => 'Detail Ekstrakulikuler',
+            'ekstrakulikuler' => $ekstrakulikuler
         ]);
-
-        return redirect()
-            ->route('admin.ekstrakulikuler')
-            ->with('success', 'Data ekstrakulikuler berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        $ekstrakulikuler = Ekstrakulikuler::findOrFail($id);
+        try {
+            $ekstrakulikuler = Ekstrakulikuler::findOrFail(Crypt::decrypt($id));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.ekstrakulikuler')
+                ->with('error', 'Data ekstrakulikuler tidak ditemukan.');
+        }
 
-        if (
-            $ekstrakulikuler->foto &&
-            file_exists(
-                public_path(
-                    'uploads/ekstrakulikuler/' .
-                    $ekstrakulikuler->foto
-                )
-            )
-        ) {
-            unlink(
-                public_path(
-                    'uploads/ekstrakulikuler/' .
-                    $ekstrakulikuler->foto
-                )
-            );
+        if ($ekstrakulikuler->foto && file_exists(public_path('uploads/ekstrakulikuler/' . $ekstrakulikuler->foto))) {
+            unlink(public_path('uploads/ekstrakulikuler/' . $ekstrakulikuler->foto));
         }
 
         $ekstrakulikuler->delete();
@@ -171,5 +149,12 @@ class EkstrakulikulerController extends Controller
         return redirect()
             ->route('admin.ekstrakulikuler')
             ->with('success', 'Data ekstrakulikuler berhasil dihapus.');
+    }
+
+    public function publicEkstrakurikuler()
+    {
+        $ekstrakurikuler = Ekstrakulikuler::all();
+
+        return view('public.ekstrakurikuler', compact('ekstrakurikuler'));
     }
 }

@@ -108,4 +108,30 @@ class DashboardController extends Controller
     {
         //
     }
+    public function publicDashboard()
+{
+    $sekolah = ProfileSekolah::first();
+    $guru = Guru::latest()->get();
+    $siswa = Siswa::latest()->get();
+    $beritaTerbaru = Berita::latest('tanggal')->get();
+    $galeris = Galeri::latest()->get();
+    $ekstrakulikulers = Ekstrakulikuler::latest()->get();
+    $jumlahSiswa = Siswa::count();
+    $jumlahGuru = Guru::count();
+    $jumlahBerita = Berita::count();
+    $jumlahEkstrakulikuler = Ekstrakulikuler::count();
+
+    return view('public.home', compact(
+        'sekolah',
+        'guru',
+        'siswa',
+        'beritaTerbaru',
+        'galeris',
+        'ekstrakulikulers',
+        'jumlahSiswa',
+        'jumlahGuru',
+        'jumlahBerita',
+        'jumlahEkstrakulikuler'
+    ));
+}
 }

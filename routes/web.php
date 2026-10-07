@@ -10,74 +10,114 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
-Route::get('/', [AuthController::class, 'index'])->name('admin.login');
-Route::get('/login', [AuthController::class, 'index']) ->name('login');
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('/login-proses', [AuthController::class, 'prosesLogin'])->name('admin.proses_login');
+    Route::get('/', [DashboardController::class, 'publicDashboard'])->name('public.dashboard');
+    Route::get('/berita', [BeritaController::class, 'publicBerita'])->name('public.berita');
+    Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'publicEkstrakurikuler'])->name('public.ekstrakulikuler');
+    Route::get('/galeri', [GaleriController::class, 'publicGaleri'])->name('public.galeri');
+    Route::get('/guru', [GuruController::class, 'publicGuru'])->name('public.guru');
+    Route::get('/siswa', [SiswaController::class, 'publicSiswa'])->name('public.siswa');
+    Route::get('/profile', [ProfileSekolahController::class, 'publicProfile'])->name('public.profile');
 
-Route::prefix('admin')
-    ->middleware('auth.check')
-    ->group(function () {
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login-proses', [AuthController::class, 'processLogin'])->name('admin.process_login');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::prefix('admin')->middleware('auth.check')->group(function () {
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('admin.profile');
-    Route::get('/berita', [BeritaController::class, 'index'])->name('admin.berita');
-    Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'index'])->name('admin.ekstrakulikuler');
-    Route::get('/galeri', [GaleriController::class, 'index'])->name('admin.galeri');
-    Route::get('/guru', [GuruController::class, 'index'])->name('admin.guru');
-    Route::get('/siswa', [SiswaController::class, 'index']) ->name('admin.siswa');
+
+    Route::prefix('profil-sekolah')->group(function () {
+
+    // Lihat profile - Admin & Operator
+    Route::get('/', [ProfileSekolahController::class, 'index'])
+        ->name('admin.profil-sekolah')
+        ->middleware('auth.check');
+
+    // Edit profile - Admin saja
+    Route::get('/form', [ProfileSekolahController::class, 'form'])
+        ->name('admin.profil-sekolah.form')
+        ->middleware(['auth.check', 'admin']);
+
+    // Simpan perubahan - Admin saja
+    Route::post('/save', [ProfileSekolahController::class, 'save'])
+        ->name('admin.profil-sekolah.save')
+        ->middleware(['auth.check', 'admin']);
 });
 
-Route::prefix('siswa')->group(function () {
-    Route::get('/', [SiswaController::class, 'index'])->name('admin.siswa');
-    Route::get('/tambah', [SiswaController::class, 'create'])->name('admin.siswa.tambah');
-    Route::post('/simpan', [SiswaController::class, 'store'])->name('admin.siswa.store');
-    Route::get('/edit/{id}', [SiswaController::class, 'edit'])->name('admin.siswa.edit');
-    Route::put('/update/{id}', [SiswaController::class, 'update'])->name('admin.siswa.update');
-    Route::delete('/hapus/{id}', [SiswaController::class, 'destroy'])->name('admin.siswa.destroy');
-});
+    Route::prefix('berita')->group(function () {
+        // Admin & Operator
+        Route::get('/', [BeritaController::class, 'index'])->name('admin.berita');
+        Route::get('/show/{id}', [BeritaController::class, 'show'])->name('admin.berita.show');
 
- Route::prefix('profile')->group(function () {
-    Route::get('/profile', [ProfileSekolahController::class, 'index'])->name('admin.profile');
-    Route::get('/profile/edit', [ProfileSekolahController::class, 'edit'])->name('admin.profile.edit');
-    Route::put('/profile/update', [ProfileSekolahController::class, 'update'])->name('admin.profile.update');
-    Route::put('/update', [ProfileSekolahController::class, 'update']) ->name('admin.profile.update');
+        // Admin saja
+        Route::middleware('admin')->group(function () {
+            Route::get('/add-edit/{id?}', [BeritaController::class, 'addEdit'])->name('admin.berita.addEdit');
+            Route::post('/save/{id?}', [BeritaController::class, 'save'])->name('admin.berita.save');
+            Route::delete('/delete/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.delete');
+        });
+    });
 
-});
+    Route::prefix('ekstrakurikuler')->group(function () {
+        // Admin & Operator
+        Route::get('/', [EkstrakulikulerController::class, 'index'])->name('admin.ekstrakulikuler');
+        Route::get('/show/{id}', [EkstrakulikulerController::class, 'show'])->name('admin.ekstrakulikuler.show');
 
- Route::prefix('guru')->group(function () {
-    Route::get('/', [GuruController::class, 'index'])->name('admin.guru');
-    Route::get('/tambah', [GuruController::class, 'create'])->name('admin.guru.tambah');
-    Route::post('/simpan', [GuruController::class, 'store'])->name('admin.guru.store');
-    Route::get('/edit/{id}', [GuruController::class, 'edit'])->name('admin.guru.edit');
-    Route::put('/update/{id}', [GuruController::class, 'update'])->name('admin.guru.update');
-    Route::delete('/hapus/{id}', [GuruController::class, 'destroy'])->name('admin.guru.destroy');
-});
+        // Admin saja
+        Route::middleware('admin')->group(function () {
+            Route::get('/add-edit/{id?}', [EkstrakulikulerController::class, 'addEdit'])->name('admin.ekstrakulikuler.addEdit');
+            Route::post('/save/{id?}', [EkstrakulikulerController::class, 'save'])->name('admin.ekstrakulikuler.save');
+            Route::delete('/delete/{id}', [EkstrakulikulerController::class, 'destroy'])->name('admin.ekstrakulikuler.delete');
+        });
+    });
+    Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'publicEkstrakurikuler'])->name('public.ekstrakulikuler');
+    Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'publicEkstrakurikuler'])->name('public.ekstrakulikuler');
 
-Route::prefix('galeri')->group(function () {
-    Route::get('/', [GaleriController::class, 'index'])->name('admin.galeri');
-    Route::get('/tambah', [GaleriController::class, 'create'])->name('admin.galeri.tambah');
-    Route::post('/simpan', [GaleriController::class, 'store'])->name('admin.galeri.store');
-    Route::get('/edit/{id}', [GaleriController::class, 'edit'])->name('admin.galeri.edit');
-    Route::put('/update/{id}', [GaleriController::class, 'update'])->name('admin.galeri.update');
-    Route::delete('/hapus/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
+    Route::prefix('galeri')->group(function () {
+        // Admin & Operator
+        Route::get('/', [GaleriController::class, 'index'])->name('admin.galeri');
+        Route::get('/show/{id}', [GaleriController::class, 'show'])->name('admin.galeri.show');
 
-});
-Route::prefix('ekstrakulikuler')->group(function () {
-    Route::get('/', [EkstrakulikulerController::class, 'index'])->name('admin.ekstrakulikuler');
-    Route::get('/tambah', [EkstrakulikulerController::class, 'create'])->name('admin.ekstrakulikuler.tambah');
-    Route::post('/simpan', [EkstrakulikulerController::class, 'store'])->name('admin.ekstrakulikuler.store');
-    Route::get('/edit/{id}', [EkstrakulikulerController::class, 'edit'])->name('admin.ekstrakulikuler.edit');
-    Route::put('/update/{id}', [EkstrakulikulerController::class, 'update'])->name('admin.ekstrakulikuler.update');
-    Route::delete('/hapus/{id}', [EkstrakulikulerController::class, 'destroy'])->name('admin.ekstrakulikuler.destroy');
-});
+        // Admin saja
+        Route::middleware('admin')->group(function () {
+            Route::get('/add-edit/{id?}', [GaleriController::class, 'addEdit'])->name('admin.galeri.addEdit');
+            Route::post('/save/{id?}', [GaleriController::class, 'save'])->name('admin.galeri.save');
+            Route::delete('/delete/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.delete');
+        });
+    });
 
-Route::prefix('berita')->group(function () {
-    Route::get('/', [BeritaController::class, 'index'])->name('admin.berita');
-    Route::get('/tambah', [BeritaController::class, 'create'])->name('admin.berita.tambah');
-    Route::post('/simpan', [BeritaController::class, 'store'])->name('admin.berita.store');
-    Route::get('/detail/{id}', [BeritaController::class, 'show'])->name('admin.berita.detail');
-    Route::get('/edit/{id}', [BeritaController::class, 'edit'])->name('admin.berita.edit');
-    Route::put('/update/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');
-    Route::delete('/hapus/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+    Route::prefix('guru')->group(function () {
+        // Admin & Operator
+        Route::get('/', [GuruController::class, 'index'])->name('admin.guru.index');
+        Route::get('/show/{id}', [GuruController::class, 'show'])->name('admin.guru.show');
+
+        // Admin saja
+        Route::middleware('admin')->group(function () {
+            Route::get('/add-edit/{id?}', [GuruController::class, 'addEdit'])->name('admin.guru.addEdit');
+            Route::post('/save/{id?}', [GuruController::class, 'save'])->name('admin.guru.save');
+            Route::delete('/delete/{id}', [GuruController::class, 'destroy'])->name('admin.guru.delete');
+        });
+    });
+
+    Route::prefix('siswa')->group(function () {
+        // Bisa diakses Admin & Operator
+        Route::get('/', [SiswaController::class, 'index'])->name('admin.siswa.index');
+        Route::get('/show/{id}', [SiswaController::class, 'show'])->name('admin.siswa.show');
+        // Hanya Admin
+        Route::middleware('admin')->group(function () {
+            Route::get('/add-edit/{id?}', [SiswaController::class, 'addEdit'])->name('admin.siswa.addEdit');
+            Route::post('/save/{id?}', [SiswaController::class, 'save'])->name('admin.siswa.save');
+            Route::delete('/delete/{id}', [SiswaController::class, 'destroy'])->name('admin.siswa.delete');
+        });
+    });
+
+    Route::middleware('admin')->prefix('user')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('admin.user.index');
+        Route::get('/add-edit/{id?}', [UserController::class, 'addEdit'])->name('admin.user.addEdit');
+        Route::post('/save/{id?}', [UserController::class, 'save'])->name('admin.user.save');
+        Route::get('/show/{id}', [UserController::class, 'show'])->name('admin.user.show');
+        Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('admin.user.delete');
+    });
+
 });
