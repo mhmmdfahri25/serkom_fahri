@@ -1,3 +1,4 @@
+
 @extends('public.dashboard')
 
 @section('title', $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA')
@@ -5,18 +6,9 @@
 @section('content')
 
 <style>
-    /* ================= GENERAL ================= */
-    html {
-        scroll-behavior: smooth;
-    }
-
-    section {
-        scroll-margin-top: 90px;
-    }
-
-    .section-padding {
-        padding: 90px 0;
-    }
+    html { scroll-behavior: smooth; }
+    section { scroll-margin-top: 90px; }
+    .section-padding { padding: 90px 0; }
 
     .section-title {
         text-align: center;
@@ -48,7 +40,7 @@
         line-height: 1.8;
     }
 
-    /* ================= HERO ================= */
+    /* HERO */
     .hero-carousel {
         width: 100%;
         overflow: hidden;
@@ -143,9 +135,7 @@
         font-weight: 700;
     }
 
-    .hero-buttons .btn i {
-        margin-right: 7px;
-    }
+    .hero-buttons .btn i { margin-right: 7px; }
 
     .hero-carousel .carousel-control-prev,
     .hero-carousel .carousel-control-next {
@@ -183,55 +173,87 @@
         background-color: #fff;
     }
 
-    /* ================= STATISTIK ================= */
+    /* STATISTIK - PANEL HORIZONTAL */
     .stats-section {
         position: relative;
         z-index: 5;
-        margin-top: -55px;
+        margin-top: -65px;
+        margin-bottom: 20px;
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        overflow: hidden;
+        border: 1px solid rgba(37, 99, 235, .12);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 15px 40px rgba(15, 23, 42, .10);
     }
 
     .stats-card {
-        padding: 30px 20px;
-        border: 1px solid #e5e7eb;
-        border-radius: 18px;
-        background: #fff;
-        text-align: center;
-        box-shadow: 0 15px 40px rgba(15,23,42,.08);
-        transition: .3s;
-    }
-
-    .stats-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 45px rgba(15,23,42,.12);
-    }
-
-    .stats-icon {
-        width: 55px;
-        height: 55px;
+        position: relative;
+        min-width: 0;
+        min-height: 145px;
+        padding: 27px 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 15px;
-        border-radius: 14px;
+        gap: 16px;
+        background: #fff;
+        text-align: left;
+        transition: background .3s ease;
+    }
+
+    .stats-card:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 25%;
+        right: 0;
+        width: 2px;
+        height: 50%;
+        background: #dbeafe;
+        transform: skewX(-18deg);
+    }
+
+    .stats-card:hover {
+        background: #f8fbff;
+    }
+
+    .stats-icon {
+        width: 54px;
+        height: 54px;
+        min-width: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        border-radius: 15px;
         background: #eff6ff;
         color: #2563eb;
         font-size: 25px;
     }
 
+    .stats-info {
+        min-width: 0;
+    }
+
     .stats-card h3 {
         margin: 0;
         color: #172554;
-        font-size: 30px;
+        font-size: clamp(25px, 2.5vw, 34px);
         font-weight: 800;
+        line-height: 1.2;
     }
 
     .stats-card p {
-        margin: 5px 0 0;
+        margin: 6px 0 0;
         color: #64748b;
         font-size: 14px;
+        font-weight: 500;
     }
 
-    /* ================= PROFIL ================= */
+    /* PROFIL */
     .profile-section {
         background: #f8fafc;
     }
@@ -277,13 +299,10 @@
         color: #64748b;
     }
 
-    .profile-info-item strong {
-        color: #172554;
-    }
+    .profile-info-item strong { color: #172554; }
 
-    /* ================= VISI MISI ================= */
-    .vision-card,
-    .mission-card {
+    /* VISI MISI */
+    .vision-card {
         height: 100%;
         padding: 35px;
         border-radius: 20px;
@@ -292,41 +311,22 @@
         box-shadow: 0 10px 30px rgba(15,23,42,.05);
     }
 
-    .vision-icon,
-    .mission-icon {
-        width: 55px;
-        height: 55px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        border-radius: 14px;
-        background: #eff6ff;
-        color: #2563eb;
-        font-size: 25px;
-    }
-
-    .vision-card h3,
-    .mission-card h3 {
+    .vision-card h3 {
         margin-bottom: 15px;
         color: #172554;
         font-weight: 800;
     }
 
-    .vision-card p,
-    .mission-card li {
+    .vision-card p {
         color: #64748b;
         line-height: 1.8;
     }
 
-    .mission-card ul {
-        padding-left: 20px;
-        margin: 0;
-    }
-
-    /* ================= GURU ================= */
+    /* GURU */
     .guru-card {
         height: 100%;
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
         border: 1px solid #e5e7eb;
         border-radius: 18px;
@@ -342,18 +342,24 @@
 
     .guru-photo {
         width: 100%;
-        height: 270px;
-        object-fit: cover;
+        height: auto;
+        display: block;
     }
 
     .guru-content {
         padding: 22px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .guru-content h5 {
         margin-bottom: 7px;
         color: #172554;
         font-weight: 800;
+        min-height: 48px;
+        display: flex;
+        align-items: flex-start;
     }
 
     .guru-content p {
@@ -362,10 +368,8 @@
         font-size: 14px;
     }
 
-    /* ================= SISWA ================= */
-    .student-section {
-        background: #f8fafc;
-    }
+    /* SISWA */
+    .student-section { background: #f8fafc; }
 
     .student-card {
         padding: 30px;
@@ -385,7 +389,7 @@
         line-height: 1.8;
     }
 
-    /* ================= BERITA ================= */
+    /* BERITA */
     .news-card {
         height: 100%;
         overflow: hidden;
@@ -407,9 +411,7 @@
         object-fit: cover;
     }
 
-    .news-content {
-        padding: 22px;
-    }
+    .news-content { padding: 22px; }
 
     .news-date {
         color: #2563eb;
@@ -429,10 +431,8 @@
         font-size: 14px;
     }
 
-    /* ================= GALERI ================= */
-    .gallery-section {
-        background: #f8fafc;
-    }
+    /* GALERI */
+    .gallery-section { background: #f8fafc; }
 
     .gallery-card {
         position: relative;
@@ -448,9 +448,7 @@
         transition: .4s;
     }
 
-    .gallery-card:hover img {
-        transform: scale(1.07);
-    }
+    .gallery-card:hover img { transform: scale(1.07); }
 
     .gallery-overlay {
         position: absolute;
@@ -465,7 +463,7 @@
         font-weight: 700;
     }
 
-    /* ================= EKSTRAKURIKULER ================= */
+    /* EKSTRAKURIKULER */
     .extra-card {
         height: 100%;
         overflow: hidden;
@@ -487,9 +485,7 @@
         object-fit: cover;
     }
 
-    .extra-content {
-        padding: 22px;
-    }
+    .extra-content { padding: 22px; }
 
     .extra-content h5 {
         color: #172554;
@@ -502,7 +498,7 @@
         font-size: 14px;
     }
 
-    /* ================= BUTTON ================= */
+    /* BUTTON LIHAT SEMUA */
     .view-all {
         margin-top: 40px;
         text-align: center;
@@ -528,7 +524,7 @@
         transform: translateY(-2px);
     }
 
-    /* ================= CTA ================= */
+    /* CTA */
     .cta-section {
         padding: 80px 0;
         background: linear-gradient(135deg,#172554,#2563eb);
@@ -548,7 +544,7 @@
         line-height: 1.8;
     }
 
-    /* ================= FOOTER ================= */
+    /* FOOTER */
     .site-footer {
         width: 100%;
         display: block;
@@ -605,9 +601,7 @@
         list-style: none;
     }
 
-    .footer-links li {
-        margin-bottom: 9px;
-    }
+    .footer-links li { margin-bottom: 9px; }
 
     .footer-links a {
         color: #94a3b8;
@@ -671,7 +665,7 @@
         color: #64748b;
     }
 
-    /* ================= SCROLL ANIMATION ================= */
+    /* ANIMASI */
     .scroll-animate {
         opacity: 0;
         transform: translateY(60px);
@@ -680,40 +674,36 @@
             transform .8s cubic-bezier(.22,1,.36,1);
     }
 
-    .scroll-animate.from-left {
-        transform: translateX(-80px);
-    }
-
-    .scroll-animate.from-right {
-        transform: translateX(80px);
-    }
-
-    .scroll-animate.zoom {
-        transform: scale(.85);
-    }
+    .scroll-animate.from-left { transform: translateX(-80px); }
+    .scroll-animate.from-right { transform: translateX(80px); }
+    .scroll-animate.zoom { transform: scale(.85); }
 
     .scroll-animate.show {
         opacity: 1;
         transform: translateY(0) translateX(0) scale(1);
     }
 
-    .scroll-delay-1 {
-        transition-delay: .1s;
-    }
+    .scroll-delay-1 { transition-delay: .1s; }
+    .scroll-delay-2 { transition-delay: .2s; }
+    .scroll-delay-3 { transition-delay: .3s; }
 
-    .scroll-delay-2 {
-        transition-delay: .2s;
-    }
-
-    .scroll-delay-3 {
-        transition-delay: .3s;
-    }
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 768px) {
-        .hero-slide {
-            height: 620px;
+    /* RESPONSIVE */
+    @media (max-width: 991px) {
+        .stats-card {
+            gap: 12px;
+            padding: 24px 12px;
         }
+
+        .stats-icon {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            font-size: 22px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-slide { height: 620px; }
 
         .hero-content {
             padding: 30px;
@@ -730,26 +720,43 @@
             line-height: 1.7;
         }
 
-        .hero-buttons {
-            flex-wrap: wrap;
+        .hero-buttons { flex-wrap: wrap; }
+
+        .hero-buttons .btn { width: 100%; }
+
+        .stats-section {
+            margin-top: -40px;
         }
 
-        .hero-buttons .btn {
-            width: 100%;
+        .stats-container {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            border-radius: 16px;
         }
+
+        .stats-card {
+            min-height: 120px;
+            justify-content: flex-start;
+            padding: 20px 16px;
+            gap: 12px;
+        }
+
+        .stats-card:nth-child(2)::after { display: none; }
+
+        .stats-card:nth-child(-n+2) {
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .stats-card h3 { font-size: 27px; }
+        .stats-card p { font-size: 13px; }
 
         .profile-image {
             height: 300px;
             margin-bottom: 30px;
         }
 
-        .profile-info {
-            grid-template-columns: 1fr;
-        }
+        .profile-info { grid-template-columns: 1fr; }
 
-        .section-title h2 {
-            font-size: 30px;
-        }
+        .section-title h2 { font-size: 30px; }
 
         .scroll-animate.from-left,
         .scroll-animate.from-right {
@@ -761,10 +768,27 @@
         }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-        html {
-            scroll-behavior: auto;
+    @media (max-width: 380px) {
+        .stats-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 16px 12px;
         }
+
+        .stats-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            font-size: 19px;
+            border-radius: 11px;
+        }
+
+        .stats-card h3 { font-size: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
 
         .scroll-animate {
             opacity: 1;
@@ -774,367 +798,658 @@
     }
 </style>
 
-{{-- ================= HERO ================= --}}
+{{-- HERO --}}
 <section id="beranda" class="hero-carousel">
     <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
         </div>
+
         <div class="carousel-inner">
-            {{-- SLIDE 1 --}}
+
             <div class="carousel-item active">
                 <div class="hero-slide">
+
                     @if($sekolah && $sekolah->foto)
                         <img src="{{ asset('uploads/sekolah/'.$sekolah->foto) }}" class="hero-background" alt="{{ $sekolah->nama_sekolah }}">
                     @else
-                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="hero-background" alt="{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="hero-background" alt="SMAN 1 SAMARINDA">
                     @endif
+
                     <div class="hero-overlay"></div>
+
                     <div class="container hero-content">
-                        <div class="hero-badge scroll-animate"><i class="bi bi-mortarboard-fill"></i>Situs Resmi Sekolah</div>
-                        <h1 class="scroll-animate">Selamat Datang di<span>{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}</span></h1>
-                        <p class="scroll-animate">{{ $sekolah->deskripsi ?? 'Pendidikan berkualitas untuk membentuk generasi yang berkarakter, berprestasi, kreatif, dan siap menghadapi masa depan.' }}</p>
-                        <div class="hero-buttons scroll-animate">
-                            <a href="#profil" class="btn btn-light"><i class="bi bi-building"></i>Kenali Sekolah</a>
-                            <a href="#berita" class="btn btn-outline-light"><i class="bi bi-newspaper"></i>Lihat Berita</a>
+
+                        <div class="hero-badge scroll-animate">
+                            <i class="bi bi-mortarboard-fill"></i>
+                            Situs Resmi Sekolah
                         </div>
+
+                        <h1 class="scroll-animate">
+                            Selamat Datang di
+                            <span>{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}</span>
+                        </h1>
+
+                        <p class="scroll-animate">
+                            {{ $sekolah->deskripsi ?? 'Pendidikan berkualitas untuk membentuk generasi yang berkarakter, berprestasi, kreatif, dan siap menghadapi masa depan.' }}
+                        </p>
+
+                        <div class="hero-buttons scroll-animate">
+                            <a href="#profil" class="btn btn-light">
+                                <i class="bi bi-building"></i>
+                                Kenali Sekolah
+                            </a>
+
+                            <a href="#berita" class="btn btn-outline-light">
+                                <i class="bi bi-newspaper"></i>
+                                Lihat Berita
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            {{-- SLIDE 2 --}}
             <div class="carousel-item">
                 <div class="hero-slide">
+
                     @if(isset($galeris) && $galeris->count() > 0 && $galeris->first()->foto)
-                        <img src="{{ asset('uploads/galeri/'.$galeris->first()->foto) }}" class="hero-background" alt="Kegiatan {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                        <img src="{{ asset('uploads/galeri/'.$galeris->first()->foto) }}" class="hero-background" alt="Kegiatan Sekolah">
                     @else
-                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="hero-background" alt="Kegiatan {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="hero-background" alt="SMAN 1 SAMARINDA">
                     @endif
+
                     <div class="hero-overlay"></div>
+
                     <div class="container hero-content">
-                        <div class="hero-badge scroll-animate"><i class="bi bi-images"></i>Kegiatan Sekolah</div>
-                        <h1 class="scroll-animate">Aktif dan<span>Berprestasi</span></h1>
-                        <p class="scroll-animate">Berbagai kegiatan akademik dan non-akademik menjadi bagian dari perjalanan siswa {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }} untuk berkembang dan meraih prestasi.</p>
-                        <div class="hero-buttons scroll-animate">
-                            <a href="#galeri" class="btn btn-light"><i class="bi bi-images"></i>Lihat Galeri</a>
-                            <a href="#ekstrakurikuler" class="btn btn-outline-light"><i class="bi bi-trophy"></i>Ekstrakurikuler</a>
+
+                        <div class="hero-badge scroll-animate">
+                            <i class="bi bi-images"></i>
+                            Kegiatan Sekolah
                         </div>
+
+                        <h1 class="scroll-animate">
+                            Aktif dan
+                            <span>Berprestasi</span>
+                        </h1>
+
+                        <p class="scroll-animate">
+                            Berbagai kegiatan akademik dan non-akademik menjadi bagian dari perjalanan siswa {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }} untuk berkembang dan meraih prestasi.
+                        </p>
+
+                        <div class="hero-buttons scroll-animate">
+                            <a href="#galeri" class="btn btn-light">
+                                <i class="bi bi-images"></i>
+                                Lihat Galeri
+                            </a>
+
+                            <a href="#ekstrakurikuler" class="btn btn-outline-light">
+                                <i class="bi bi-trophy"></i>
+                                Ekstrakurikuler
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            {{-- SLIDE 3 --}}
             <div class="carousel-item">
                 <div class="hero-slide">
+
                     @if(isset($beritaTerbaru) && $beritaTerbaru->count() > 0 && $beritaTerbaru->first()->foto)
-                        <img src="{{ asset('uploads/berita/'.$beritaTerbaru->first()->foto) }}" class="hero-background" alt="Berita {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                        <img src="{{ asset('uploads/berita/'.$beritaTerbaru->first()->foto) }}" class="hero-background" alt="Berita Sekolah">
                     @else
-                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="hero-background" alt="Berita {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="hero-background" alt="SMAN 1 SAMARINDA">
                     @endif
+
                     <div class="hero-overlay"></div>
+
                     <div class="container hero-content">
-                        <div class="hero-badge scroll-animate"><i class="bi bi-megaphone-fill"></i>Informasi Sekolah</div>
-                        <h1 class="scroll-animate">Informasi<span>Terbaru Sekolah</span></h1>
-                        <p class="scroll-animate">Dapatkan informasi terbaru mengenai kegiatan, pengumuman, berita, dan berbagai perkembangan {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.</p>
-                        <div class="hero-buttons scroll-animate">
-                            <a href="#berita" class="btn btn-light"><i class="bi bi-newspaper"></i>Baca Berita</a>
-                            <a href="#guru" class="btn btn-outline-light"><i class="bi bi-people"></i>Kenali Guru</a>
+
+                        <div class="hero-badge scroll-animate">
+                            <i class="bi bi-megaphone-fill"></i>
+                            Informasi Sekolah
                         </div>
+
+                        <h1 class="scroll-animate">
+                            Informasi
+                            <span>Terbaru Sekolah</span>
+                        </h1>
+
+                        <p class="scroll-animate">
+                            Dapatkan informasi terbaru mengenai kegiatan, pengumuman, berita, dan berbagai perkembangan {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.
+                        </p>
+
+                        <div class="hero-buttons scroll-animate">
+                            <a href="#berita" class="btn btn-light">
+                                <i class="bi bi-newspaper"></i>
+                                Baca Berita
+                            </a>
+
+                            <a href="#guru" class="btn btn-outline-light">
+                                <i class="bi bi-people"></i>
+                                Kenali Guru
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
             <span class="visually-hidden">Sebelumnya</span>
         </button>
+
         <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
             <span class="visually-hidden">Berikutnya</span>
         </button>
+
     </div>
 </section>
 
-{{-- ================= STATISTIK ================= --}}
+{{-- STATISTIK --}}
 <section class="stats-section">
     <div class="container">
-        <div class="row g-3">
-            <div class="col-6 col-lg-3">
-                <div class="stats-card scroll-animate zoom">
-                    <div class="stats-icon"><i class="bi bi-people-fill"></i></div>
+
+        <div class="stats-container">
+
+            <div class="stats-card scroll-animate zoom">
+                <div class="stats-icon">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="stats-info">
                     <h3>{{ $jumlahSiswa ?? 0 }}</h3>
                     <p>Siswa</p>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
-                <div class="stats-card scroll-animate zoom scroll-delay-1">
-                    <div class="stats-icon"><i class="bi bi-person-badge-fill"></i></div>
+
+            <div class="stats-card scroll-animate zoom scroll-delay-1">
+                <div class="stats-icon">
+                    <i class="bi bi-person-badge-fill"></i>
+                </div>
+                <div class="stats-info">
                     <h3>{{ $jumlahGuru ?? 0 }}</h3>
                     <p>Guru</p>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
-                <div class="stats-card scroll-animate zoom scroll-delay-2">
-                    <div class="stats-icon"><i class="bi bi-newspaper"></i></div>
+
+            <div class="stats-card scroll-animate zoom scroll-delay-2">
+                <div class="stats-icon">
+                    <i class="bi bi-newspaper"></i>
+                </div>
+                <div class="stats-info">
                     <h3>{{ $jumlahBerita ?? 0 }}</h3>
                     <p>Berita</p>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
-                <div class="stats-card scroll-animate zoom scroll-delay-3">
-                    <div class="stats-icon"><i class="bi bi-trophy-fill"></i></div>
+
+
+            <div class="stats-card scroll-animate zoom scroll-delay-3">
+                <div class="stats-icon">
+                    <i class="bi bi-trophy-fill"></i>
+                </div>
+                <div class="stats-info">
                     <h3>{{ $jumlahEkstrakulikuler ?? 0 }}</h3>
                     <p>Ekstrakurikuler</p>
                 </div>
             </div>
+
         </div>
+
     </div>
 </section>
 
-{{-- ================= PROFIL ================= --}}
+{{-- PROFIL --}}
 <section id="profil" class="section-padding profile-section">
     <div class="container">
-       <div class="section-title scroll-animate">
+
+        <div class="section-title scroll-animate">
             <span class="badge-title" style="font-size: 22px; padding: 12px 25px;">
                 Tentang Sekolah
             </span>
         </div>
+
         <div class="row align-items-center g-5">
+
             <div class="col-lg-5">
                 @if($sekolah && $sekolah->foto)
-                    <img src="{{ asset('uploads/sekolah/'.$sekolah->foto) }}" class="profile-image scroll-animate from-left" alt="{{ $sekolah->nama_sekolah }}">
+                    <img
+                        src="{{ asset('uploads/sekolah/'.$sekolah->foto) }}"
+                        class="profile-image scroll-animate from-left"
+                        alt="{{ $sekolah->nama_sekolah }}">
                 @else
-                    <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="profile-image scroll-animate from-left" alt="{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                    <img
+                        src="{{ asset('assets/images/logosman1samarinda.png') }}"
+                        class="profile-image scroll-animate from-left"
+                        alt="SMAN 1 SAMARINDA">
                 @endif
             </div>
+
             <div class="col-lg-7">
                 <div class="profile-content scroll-animate from-right">
+
                     <h2>{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}</h2>
-                    <p>{{ $sekolah->deskripsi ?? 'SMAN 1 SAMARINDA merupakan sekolah yang berkomitmen memberikan pendidikan berkualitas bagi seluruh peserta didik.' }}</p>
+
+                    <p>
+                        {{ $sekolah->deskripsi ?? 'SMAN 1 SAMARINDA merupakan sekolah yang berkomitmen memberikan pendidikan berkualitas bagi seluruh peserta didik.' }}
+                    </p>
+
                     <div class="profile-info">
+
                         <div class="profile-info-item">
-                            <small><i class="bi bi-person-badge me-1"></i>Kepala Sekolah</small>
+                            <small>
+                                <i class="bi bi-person-badge me-1"></i>
+                                Kepala Sekolah
+                            </small>
                             <strong>{{ $sekolah->kepala_sekolah ?? '-' }}</strong>
                         </div>
+
                         <div class="profile-info-item">
-                            <small><i class="bi bi-calendar3 me-1"></i>Tahun Berdiri</small>
+                            <small>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                Tahun Berdiri
+                            </small>
                             <strong>{{ $sekolah->tahun_berdiri ?? '-' }}</strong>
                         </div>
+
                         <div class="profile-info-item">
-                            <small><i class="bi bi-geo-alt me-1"></i>Alamat</small>
+                            <small>
+                                <i class="bi bi-geo-alt me-1"></i>
+                                Alamat
+                            </small>
                             <strong>{{ $sekolah->alamat ?? '-' }}</strong>
                         </div>
+
                         <div class="profile-info-item">
-                            <small><i class="bi bi-telephone me-1"></i>Kontak</small>
+                            <small>
+                                <i class="bi bi-telephone me-1"></i>
+                                Kontak
+                            </small>
                             <strong>{{ $sekolah->kontak ?? '-' }}</strong>
                         </div>
+
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 
-{{-- ================= VISI MISI ================= --}}
+{{-- VISI MISI --}}
 <section class="section-padding">
     <div class="container">
+
         <div class="section-title scroll-animate">
             <span class="badge-title">Visi & Misi</span>
             <h2>Visi dan Misi Sekolah</h2>
         </div>
 
-       <div class="vision-card scroll-animate from-left text-center">
+        <div class="vision-card scroll-animate from-left text-center">
             <h3>Visi dan Misi</h3>
-            <p>
-                {{ $sekolah->{'visi-misi'} ?? 'Visi dan misi sekolah belum tersedia.' }}
-            </p>
+            <p>{{ $sekolah->{'visi-misi'} ?? 'Visi dan misi sekolah belum tersedia.' }}</p>
         </div>
+
     </div>
 </section>
 
-{{-- ================= GURU ================= --}}
+{{-- GURU --}}
 <section id="guru" class="section-padding">
     <div class="container">
+
         <div class="section-title scroll-animate">
             <span class="badge-title">Tenaga Pendidik</span>
             <h2>Guru Kami</h2>
-            <p>Tenaga pendidik yang berperan dalam memberikan pendidikan terbaik kepada peserta didik.</p>
+            <p>
+                Tenaga pendidik yang berperan dalam memberikan pendidikan terbaik kepada peserta didik.
+            </p>
         </div>
+
         <div class="row g-4">
+
             @forelse($guru->take(3) as $index => $item)
-                <div class="col-md-6 col-lg-4">
-                    <div class="guru-card scroll-animate zoom" style="transition-delay: {{ ($index + 1) * .15 }}s;">
-                        @if($item->foto)
-                            <img src="{{ asset('uploads/guru/'.$item->foto) }}" class="guru-photo" alt="{{ $item->nama_guru }}">
+                <div class="col-md-6 col-lg-4 d-flex">
+
+                    <div
+                        class="guru-card w-100 scroll-animate zoom"
+                        style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
+                        @if($item->foto && file_exists(public_path('uploads/guru/' . $item->foto)))
+                            <img
+                                src="{{ asset('uploads/guru/'.$item->foto) }}"
+                                class="guru-photo"
+                                alt="{{ $item->nama_guru }}">
                         @else
-                            <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="guru-photo" alt="{{ $item->nama_guru }}">
+                            <img
+                                src="{{ asset('assets/images/logosman1samarinda.png') }}"
+                                class="guru-photo"
+                                alt="{{ $item->nama_guru }}">
                         @endif
+
                         <div class="guru-content">
                             <h5>{{ $item->nama_guru }}</h5>
-                            <p><i class="bi bi-person-badge me-1"></i>NIP: {{ $item->nip }}</p>
-                            <p class="mt-2"><i class="bi bi-book me-1"></i>{{ $item->mata_pelajaran }}</p>
+
+                            <p>
+                                <i class="bi bi-person-badge me-1"></i>
+                                NIP: {{ $item->nip }}
+                            </p>
+
+                            <p class="mt-2">
+                                <i class="bi bi-book me-1"></i>
+                                {{ $item->mata_pelajaran }}
+                            </p>
                         </div>
+
                     </div>
                 </div>
             @empty
                 <div class="col-12">
-                    <div class="alert alert-light text-center">Data guru belum tersedia.</div>
+                    <div class="alert alert-light text-center">
+                        Data guru belum tersedia.
+                    </div>
                 </div>
             @endforelse
+
         </div>
+
+        <div class="view-all">
+            <a href="{{ route('public.guru') }}" class="view-all-btn">
+                <i class="bi bi-people"></i>
+                Lihat Semua Guru
+            </a>
+        </div>
+
     </div>
 </section>
 
-{{-- ================= SISWA ================= --}}
+{{-- SISWA --}}
 <section id="siswa" class="section-padding student-section">
     <div class="container">
+
         <div class="section-title scroll-animate">
             <span class="badge-title">Peserta Didik</span>
             <h2>Data Siswa</h2>
-            <p>Informasi jumlah dan data peserta didik {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.</p>
+            <p>
+                Informasi jumlah dan data peserta didik {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.
+            </p>
         </div>
+
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
+
                 <div class="student-card text-center scroll-animate zoom">
-                    <div class="stats-icon"><i class="bi bi-people-fill"></i></div>
+                    <div class="stats-icon text-center mx-auto mb-3">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
                     <h4>{{ $jumlahSiswa ?? 0 }}</h4>
-                    <p>Total peserta didik yang terdaftar di {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.</p>
+
+                    <p>
+                        Total peserta didik yang terdaftar di {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.
+                    </p>
                 </div>
+
             </div>
         </div>
+
     </div>
 </section>
 
-{{-- ================= BERITA ================= --}}
+{{-- BERITA --}}
 <section id="berita" class="section-padding">
     <div class="container">
+
         <div class="section-title scroll-animate">
             <span class="badge-title">Informasi</span>
             <h2>Berita Terbaru</h2>
-            <p>Informasi dan berita terbaru dari {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.</p>
+            <p>
+                Informasi dan berita terbaru dari {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.
+            </p>
         </div>
+
         <div class="row g-4">
+
             @forelse($beritaTerbaru->take(3) as $index => $item)
                 <div class="col-md-6 col-lg-4">
-                    <div class="news-card scroll-animate from-left" style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
+                    <div
+                        class="news-card scroll-animate from-left"
+                        style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
                         @if($item->foto)
-                            <img src="{{ asset('uploads/berita/'.$item->foto) }}" class="news-image" alt="{{ $item->judul }}">
+                            <img
+                                src="{{ asset('uploads/berita/'.$item->foto) }}"
+                                class="news-image"
+                                alt="{{ $item->judul }}">
                         @else
-                            <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="news-image" alt="{{ $item->judul }}">
+                            <img
+                                src="{{ asset('assets/images/logosman1samarinda.png') }}"
+                                class="news-image"
+                                alt="{{ $item->judul }}">
                         @endif
+
                         <div class="news-content">
-                            <div class="news-date"><i class="bi bi-calendar3 me-1"></i>{{ $item->tanggal }}</div>
+                            <div class="news-date">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ $item->tanggal }}
+                            </div>
+
                             <h5>{{ $item->judul }}</h5>
-                            <p>{{ \Illuminate\Support\Str::limit(strip_tags($item->isi),120) }}</p>
+
+                            <p>
+                                {{ \Illuminate\Support\Str::limit(strip_tags($item->isi),120) }}
+                            </p>
                         </div>
+
                     </div>
                 </div>
             @empty
                 <div class="col-12">
-                    <div class="alert alert-light text-center">Belum ada berita.</div>
+                    <div class="alert alert-light text-center">
+                        Belum ada berita.
+                    </div>
                 </div>
             @endforelse
+
         </div>
+
+        <div class="view-all">
+            <a href="{{ route('public.berita') }}" class="view-all-btn">
+                <i class="bi bi-newspaper"></i>
+                Lihat Semua Berita
+            </a>
+        </div>
+
     </div>
 </section>
 
-{{-- ================= GALERI ================= --}}
+{{-- GALERI --}}
 <section id="galeri" class="section-padding gallery-section">
     <div class="container">
+
         <div class="section-title scroll-animate">
             <span class="badge-title">Dokumentasi</span>
             <h2>Galeri Sekolah</h2>
-            <p>Dokumentasi kegiatan dan aktivitas {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.</p>
+            <p>
+                Dokumentasi kegiatan dan aktivitas {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}.
+            </p>
         </div>
+
         <div class="row g-4">
+
             @forelse($galeris->take(3) as $index => $item)
                 <div class="col-md-6 col-lg-4">
-                    <div class="gallery-card scroll-animate zoom" style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
+                    <div
+                        class="gallery-card scroll-animate zoom"
+                        style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
                         @if($item->foto)
-                            <img src="{{ asset('uploads/galeri/'.$item->foto) }}" alt="{{ $item->judul }}">
+                            <img
+                                src="{{ asset('uploads/galeri/'.$item->foto) }}"
+                                alt="{{ $item->judul }}">
                         @else
-                            <img src="{{ asset('assets/images/logosman1samarinda.png') }}" alt="{{ $item->judul }}">
+                            <img
+                                src="{{ asset('assets/images/logosman1samarinda.png') }}"
+                                alt="{{ $item->judul }}">
                         @endif
+
                         <div class="gallery-overlay">
                             <h5>{{ $item->judul }}</h5>
+
                             @if($item->keterangan)
                                 <small>{{ $item->keterangan }}</small>
                             @endif
                         </div>
+
                     </div>
                 </div>
             @empty
                 <div class="col-12">
-                    <div class="alert alert-light text-center">Belum ada galeri.</div>
+                    <div class="alert alert-light text-center">
+                        Belum ada galeri.
+                    </div>
                 </div>
             @endforelse
+
         </div>
+
+        <div class="view-all">
+            <a href="{{ route('public.galeri') }}" class="view-all-btn">
+                <i class="bi bi-images"></i>
+                Lihat Semua Galeri
+            </a>
+        </div>
+
     </div>
 </section>
 
-{{-- ================= EKSTRAKURIKULER ================= --}}
+{{-- EKSTRAKURIKULER --}}
 <section id="ekstrakurikuler" class="section-padding">
     <div class="container">
+
         <div class="section-title scroll-animate">
             <span class="badge-title">Kegiatan Siswa</span>
             <h2>Ekstrakurikuler</h2>
-            <p>Berbagai kegiatan ekstrakurikuler untuk mengembangkan minat, bakat, dan kreativitas siswa.</p>
+            <p>
+                Berbagai kegiatan ekstrakurikuler untuk mengembangkan minat, bakat, dan kreativitas siswa.
+            </p>
         </div>
+
         <div class="row g-4">
+
             @forelse($ekstrakulikulers->take(3) as $index => $item)
                 <div class="col-md-6 col-lg-4">
-                    <div class="extra-card scroll-animate from-right" style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
+                    <div
+                        class="extra-card scroll-animate from-right"
+                        style="transition-delay: {{ ($index + 1) * .15 }}s;">
+
                         @if($item->foto)
-                            <img src="{{ asset('uploads/ekstrakulikuler/'.$item->foto) }}" class="extra-image" alt="{{ $item->nama_ekstrakulikuler }}">
+                            <img
+                                src="{{ asset('uploads/ekstrakulikuler/'.$item->foto) }}"
+                                class="extra-image"
+                                alt="{{ $item->nama_ekstrakulikuler }}">
                         @else
-                            <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="extra-image" alt="{{ $item->nama_ekstrakulikuler }}">
+                            <img
+                                src="{{ asset('assets/images/logosman1samarinda.png') }}"
+                                class="extra-image"
+                                alt="{{ $item->nama_ekstrakulikuler }}">
                         @endif
+
                         <div class="extra-content">
                             <h5>{{ $item->nama_ekstrakulikuler }}</h5>
-                            <p class="mb-2"><i class="bi bi-person me-1"></i>Pembina: {{ $item->pembina ?? '-' }}</p>
-                            <p class="mb-2"><i class="bi bi-calendar3 me-1"></i>Jadwal: {{ $item->jadwal_latihan ?? '-' }}</p>
-                            <p class="mb-0">{{ \Illuminate\Support\Str::limit(strip_tags($item->deskripsi),120) }}</p>
+
+                            <p class="mb-2">
+                                <i class="bi bi-person me-1"></i>
+                                Pembina: {{ $item->pembina ?? '-' }}
+                            </p>
+
+                            <p class="mb-2">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                Jadwal: {{ $item->jadwal_latihan ?? '-' }}
+                            </p>
+
+                            <p class="mb-0">
+                                {{ \Illuminate\Support\Str::limit(strip_tags($item->deskripsi),120) }}
+                            </p>
                         </div>
+
                     </div>
                 </div>
             @empty
                 <div class="col-12">
-                    <div class="alert alert-light text-center">Belum ada data ekstrakurikuler.</div>
+                    <div class="alert alert-light text-center">
+                        Belum ada data ekstrakurikuler.
+                    </div>
                 </div>
             @endforelse
+
         </div>
+
+        <div class="view-all">
+            <a href="{{ route('public.ekstrakulikuler') }}" class="view-all-btn">
+                <i class="bi bi-trophy"></i>
+                Lihat Semua Ekstrakurikuler
+            </a>
+        </div>
+
     </div>
 </section>
 
-{{-- ================= FOOTER ================= --}}
+{{-- FOOTER --}}
 <footer class="site-footer">
     <div class="container">
+
         <div class="row g-4">
+
             <div class="col-lg-5">
+
                 <div class="footer-brand scroll-animate from-left">
+
                     @if($sekolah && $sekolah->logo)
-                        <img src="{{ asset('uploads/sekolah/'.$sekolah->logo) }}" class="footer-logo" alt="{{ $sekolah->nama_sekolah }}">
+                        <img
+                            src="{{ asset('uploads/sekolah/'.$sekolah->logo) }}"
+                            class="footer-logo"
+                            alt="{{ $sekolah->nama_sekolah }}">
                     @else
-                        <img src="{{ asset('assets/images/logosman1samarinda.png') }}" class="footer-logo" alt="{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}">
+                        <img
+                            src="{{ asset('assets/images/logosman1samarinda.png') }}"
+                            class="footer-logo"
+                            alt="SMAN 1 SAMARINDA">
                     @endif
+
                     <div>
                         <h5>{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}</h5>
                         <p>Situs Resmi Sekolah</p>
                     </div>
+
                 </div>
-                <p class="scroll-animate from-left">{{ $sekolah->deskripsi ?? 'SMAN 1 SAMARINDA merupakan sekolah yang berkomitmen memberikan pendidikan berkualitas bagi seluruh peserta didik.' }}</p>
+
+                <p class="scroll-animate from-left">
+                    {{ $sekolah->deskripsi ?? 'SMAN 1 SAMARINDA merupakan sekolah yang berkomitmen memberikan pendidikan berkualitas bagi seluruh peserta didik.' }}
+                </p>
+
                 <div class="footer-social scroll-animate">
                     <a href="#"><i class="bi bi-facebook"></i></a>
                     <a href="#"><i class="bi bi-instagram"></i></a>
                     <a href="#"><i class="bi bi-youtube"></i></a>
                 </div>
+
             </div>
 
             <div class="col-6 col-lg-3">
+
                 <h6 class="scroll-animate">Menu</h6>
+
                 <ul class="footer-links scroll-animate">
                     <li><a href="#beranda">Beranda</a></li>
                     <li><a href="#profil">Profil</a></li>
@@ -1144,46 +1459,71 @@
                     <li><a href="#galeri">Galeri</a></li>
                     <li><a href="#ekstrakurikuler">Ekstrakurikuler</a></li>
                 </ul>
+
             </div>
 
             <div class="col-6 col-lg-4">
+
                 <h6 class="scroll-animate">Informasi Sekolah</h6>
+
                 <div class="footer-contact scroll-animate">
                     <i class="bi bi-geo-alt-fill"></i>
                     <span>{{ $sekolah->alamat ?? '-' }}</span>
                 </div>
+
                 <div class="footer-contact scroll-animate">
                     <i class="bi bi-telephone-fill"></i>
                     <span>{{ $sekolah->kontak ?? '-' }}</span>
                 </div>
+
                 <div class="footer-contact scroll-animate">
                     <i class="bi bi-building"></i>
                     <span>{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}</span>
                 </div>
+
             </div>
+
         </div>
 
         <div class="footer-bottom scroll-animate">
-            <p>© {{ date('Y') }} {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}. Semua Hak Dilindungi.</p>
+            <p>
+                © {{ date('Y') }} {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}. Semua Hak Dilindungi.
+            </p>
         </div>
+
     </div>
 </footer>
 
-{{-- ================= ANIMASI SCROLL ================= --}}
 <script>
-document.addEventListener('DOMContentLoaded',function(){
-    const elements=document.querySelectorAll('.scroll-animate');
-    if(!elements.length)return;
-    const observer=new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-            if(entry.isIntersecting)entry.target.classList.add('show');
-            else entry.target.classList.remove('show');
+document.addEventListener('DOMContentLoaded', function() {
+
+    const elements = document.querySelectorAll('.scroll-animate');
+
+    if (!elements.length) {
+        return;
+    }
+
+    const observer = new IntersectionObserver(function(entries) {
+
+        entries.forEach(function(entry) {
+
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            } else {
+                entry.target.classList.remove('show');
+            }
+
         });
-    },{
-        threshold:.15,
-        rootMargin:'0px 0px -50px 0px'
+
+    }, {
+        threshold: .15,
+        rootMargin: '0px 0px -50px 0px'
     });
-    elements.forEach(function(element){observer.observe(element)});
+
+    elements.forEach(function(element) {
+        observer.observe(element);
+    });
+
 });
 </script>
 

@@ -151,10 +151,19 @@ class EkstrakulikulerController extends Controller
             ->with('success', 'Data ekstrakulikuler berhasil dihapus.');
     }
 
-    public function publicEkstrakurikuler()
+    public function publicEkstrakulikuler()
     {
-        $ekstrakurikuler = Ekstrakulikuler::all();
+        $sekolah = \App\Models\ProfileSekolah::first();
+        $ekstrakulikulers = Ekstrakulikuler::latest()->get();
 
-        return view('public.ekstrakurikuler', compact('ekstrakurikuler'));
+        return view('public.ekstrakulikuler', compact('sekolah', 'ekstrakulikulers'));
+    }
+
+    public function publicShow($id)
+    {
+        $sekolah = \App\Models\ProfileSekolah::first();
+        $ekstrakulikuler = Ekstrakulikuler::findOrFail($id);
+
+        return view('public.ekstrakulikuler-detail', compact('sekolah', 'ekstrakulikuler'));
     }
 }

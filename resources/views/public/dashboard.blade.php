@@ -15,11 +15,8 @@
               : asset('assets/images/logosman1samarinda.png') }}">
 
     <style>
-        * {
-            scroll-behavior: smooth;
-        }
-
         html {
+            scroll-behavior: auto !important;
             scroll-padding-top: 90px;
         }
 
@@ -47,23 +44,11 @@
 
             z-index: 9999;
 
-            transition: all .35s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
         }
-
-        .main-navbar.scrolled {
-            padding: 7px 0;
-
-            background: linear-gradient(
-                135deg,
-                #0f172a,
-                #1e3a8a
-            );
-
-            box-shadow:
-                0 10px 35px rgba(15, 23, 42, .30);
-        }
-
-        /* ================= BRAND ================= */
 
         .school-brand {
             text-decoration: none;
@@ -76,22 +61,12 @@
             width: 58px;
             height: 58px;
             object-fit: contain;
-
             padding: 4px;
-
             border-radius: 10px;
-
             background: rgba(255,255,255,.95);
 
             box-shadow:
                 0 5px 15px rgba(0,0,0,.18);
-
-            transition: all .35s ease;
-        }
-
-        .main-navbar.scrolled .school-logo {
-            width: 48px;
-            height: 48px;
         }
 
         .school-name {
@@ -128,18 +103,14 @@
 
             border-radius: 10px;
 
-            transition: all .3s ease;
+            transition: background .2s ease,
+                        color .2s ease;
         }
 
         .nav-link:hover {
             color: #fff !important;
-
             background: rgba(255,255,255,.10);
-
-            transform: translateY(-1px);
         }
-
-        /* ================= MENU AKTIF ================= */
 
         .nav-link.active {
             color: #fff !important;
@@ -147,9 +118,6 @@
             background: rgba(255,255,255,.14);
 
             font-weight: 800;
-
-            box-shadow:
-                inset 0 0 0 1px rgba(255,255,255,.08);
         }
 
         .nav-link.active::after {
@@ -167,54 +135,9 @@
             background: #60a5fa;
 
             border-radius: 10px;
-
-            box-shadow:
-                0 0 10px rgba(96,165,250,.8);
-
-            transition: all .3s ease;
         }
 
-        /* ================= LOGIN BUTTON ================= */
-
-        .login-btn {
-            text-decoration: none;
-
-            color: #172554 !important;
-
-            background: #fff;
-
-            padding: 10px 18px;
-
-            border-radius: 10px;
-
-            font-weight: 700;
-
-            margin-left: 10px;
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            box-shadow:
-                0 8px 20px rgba(0,0,0,.15);
-
-            transition: all .3s ease;
-        }
-
-        .login-btn:hover {
-            color: #1d4ed8 !important;
-
-            background: #eff6ff;
-
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 12px 25px rgba(0,0,0,.20);
-        }
-
-        /* ================= TOGGLE MOBILE ================= */
+        /* ================= MOBILE ================= */
 
         .navbar-toggler {
             border: 1px solid rgba(255,255,255,.35);
@@ -299,22 +222,18 @@
 
                 border-radius: 15px;
 
-                background: rgba(15,23,42,.75);
-
-                backdrop-filter: blur(15px);
+                background: rgba(15,23,42,.95);
 
                 border: 1px solid rgba(255,255,255,.10);
             }
 
             .navbar-nav {
                 padding-top: 0;
-
                 gap: 3px;
             }
 
             .nav-link {
                 margin: 2px 0;
-
                 padding: 11px 14px !important;
             }
 
@@ -324,16 +243,6 @@
 
             .nav-link.active::after {
                 display: none;
-            }
-
-            .login-btn {
-                width: 100%;
-
-                justify-content: center;
-
-                margin-left: 0;
-
-                margin-top: 10px;
             }
 
             main {
@@ -365,21 +274,21 @@
 
 <!-- ================= NAVBAR ================= -->
 
-<nav class="navbar navbar-expand-lg main-navbar fixed-top">
+<nav class="navbar navbar-expand-lg main-navbar">
 
     <div class="container">
 
-        <!-- LOGO + NAMA SEKOLAH -->
+        <a
+            class="school-brand"
+            href="{{ route('public.dashboard') }}#beranda"
+            data-section="beranda">
 
-        <a class="school-brand"
-           href="{{ route('public.dashboard') }}#beranda"
-           data-section="beranda">
-
-            <img src="{{ $sekolah && $sekolah->logo
-                ? asset('uploads/sekolah/' . $sekolah->logo)
-                : asset('assets/images/logosman1samarinda.png') }}"
-                 class="school-logo"
-                 alt="Logo Sekolah">
+            <img
+                src="{{ $sekolah && $sekolah->logo
+                    ? asset('uploads/sekolah/' . $sekolah->logo)
+                    : asset('assets/images/logosman1samarinda.png') }}"
+                class="school-logo"
+                alt="Logo Sekolah">
 
             <div>
 
@@ -397,13 +306,14 @@
 
         <!-- TOGGLE MOBILE -->
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu"
-                aria-controls="navbarMenu"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu"
+            aria-controls="navbarMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
 
             <span class="navbar-toggler-icon"></span>
 
@@ -411,117 +321,102 @@
 
         <!-- MENU -->
 
-        <div class="collapse navbar-collapse"
-             id="navbarMenu">
+        <div class="collapse navbar-collapse" id="navbarMenu">
 
             <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                <!-- BERANDA -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link active"
-                       href="{{ route('public.dashboard') }}#beranda"
-                       data-section="beranda">
+                    <a
+                        class="nav-link active"
+                        href="{{ route('public.dashboard') }}#beranda"
+                        data-section="beranda">
 
                         <i class="bi bi-house-door me-1"></i>
-
                         Beranda
 
                     </a>
 
                 </li>
 
-                <!-- PROFIL -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{{ route('public.dashboard') }}#profil"
-                       data-section="profil">
+                    <a
+                        class="nav-link"
+                        href="{{ route('public.dashboard') }}#profil"
+                        data-section="profil">
 
                         <i class="bi bi-building me-1"></i>
-
                         Profil
 
                     </a>
 
                 </li>
 
-                <!-- GURU -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{{ route('public.dashboard') }}#guru"
-                       data-section="guru">
+                    <a
+                        class="nav-link"
+                        href="{{ route('public.dashboard') }}#guru"
+                        data-section="guru">
 
                         <i class="bi bi-person-badge me-1"></i>
-
                         Guru
 
                     </a>
 
                 </li>
 
-                <!-- SISWA -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{{ route('public.dashboard') }}#siswa"
-                       data-section="siswa">
+                    <a
+                        class="nav-link"
+                        href="{{ route('public.dashboard') }}#siswa"
+                        data-section="siswa">
 
                         <i class="bi bi-people me-1"></i>
-
                         Siswa
 
                     </a>
 
                 </li>
 
-                <!-- BERITA -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{{ route('public.dashboard') }}#berita"
-                       data-section="berita">
+                    <a
+                        class="nav-link"
+                        href="{{ route('public.dashboard') }}#berita"
+                        data-section="berita">
 
                         <i class="bi bi-newspaper me-1"></i>
-
                         Berita
 
                     </a>
 
                 </li>
 
-                <!-- GALERI -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{{ route('public.dashboard') }}#galeri"
-                       data-section="galeri">
+                    <a
+                        class="nav-link"
+                        href="{{ route('public.dashboard') }}#galeri"
+                        data-section="galeri">
 
                         <i class="bi bi-images me-1"></i>
-
                         Galeri
 
                     </a>
 
                 </li>
 
-                <!-- EKSTRAKURIKULER -->
-
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{{ route('public.dashboard') }}#ekstrakurikuler"
-                       data-section="ekstrakurikuler">
+                    <a
+                        class="nav-link"
+                        href="{{ route('public.dashboard') }}#ekstrakurikuler"
+                        data-section="ekstrakurikuler">
 
                         <i class="bi bi-trophy me-1"></i>
-
                         Ekstrakurikuler
 
                     </a>
@@ -555,48 +450,26 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const navLinks = document.querySelectorAll('.nav-link');
-
-    const brand = document.querySelector('.school-brand');
-
-    const sections = document.querySelectorAll('section[id]');
-
-    const navbar = document.querySelector('.main-navbar');
-
     const navbarMenu = document.getElementById('navbarMenu');
-
-    /* ==============================
-       MENU AKTIF
-    ============================== */
-
-    function setActiveMenu(sectionId) {
-
-        navLinks.forEach(function (link) {
-
-            link.classList.remove('active');
-
-            if (link.dataset.section === sectionId) {
-                link.classList.add('active');
-            }
-
-        });
-
-    }
-
-    /* ==============================
-       KETIKA MENU DIKLIK
-    ============================== */
 
     navLinks.forEach(function (link) {
 
         link.addEventListener('click', function () {
 
-            const sectionId = this.dataset.section;
+            /* Langsung aktifkan menu */
 
-            setActiveMenu(sectionId);
+            navLinks.forEach(function (item) {
+                item.classList.remove('active');
+            });
 
-            /* Tutup menu HP */
+            this.classList.add('active');
 
-            if (navbarMenu.classList.contains('show')) {
+            /* Tutup menu mobile */
+
+            if (
+                window.innerWidth <= 991 &&
+                navbarMenu.classList.contains('show')
+            ) {
 
                 const collapse =
                     bootstrap.Collapse.getInstance(navbarMenu);
@@ -610,97 +483,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     });
-
-    /* ==============================
-       LOGO KEMBALI KE BERANDA
-    ============================== */
-
-    if (brand) {
-
-        brand.addEventListener('click', function () {
-
-            setActiveMenu('beranda');
-
-        });
-
-    }
-
-    /* ==============================
-       MENU AKTIF SAAT SCROLL
-    ============================== */
-
-    function updateActiveMenu() {
-
-        let currentSection = 'beranda';
-
-        const scrollPosition = window.scrollY + 180;
-
-        sections.forEach(function (section) {
-
-            const sectionTop = section.offsetTop;
-
-            const sectionHeight = section.offsetHeight;
-
-            if (
-                scrollPosition >= sectionTop &&
-                scrollPosition < sectionTop + sectionHeight
-            ) {
-
-                currentSection = section.id;
-
-            }
-
-        });
-
-        setActiveMenu(currentSection);
-
-    }
-
-    /* ==============================
-       NAVBAR SAAT SCROLL
-    ============================== */
-
-    function updateNavbar() {
-
-        if (window.scrollY > 50) {
-
-            navbar.classList.add('scrolled');
-
-        } else {
-
-            navbar.classList.remove('scrolled');
-
-        }
-
-    }
-
-    window.addEventListener('scroll', function () {
-
-        updateActiveMenu();
-
-        updateNavbar();
-
-    });
-
-    /* ==============================
-       HASH URL
-    ============================== */
-
-    const hash = window.location.hash.replace('#', '');
-
-    if (hash) {
-
-        setActiveMenu(hash);
-
-    } else {
-
-        setActiveMenu('beranda');
-
-    }
-
-    updateActiveMenu();
-
-    updateNavbar();
 
 });
 

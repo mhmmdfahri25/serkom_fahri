@@ -68,9 +68,18 @@ class GaleriController extends Controller
             'keterangan' => 'required|string',
             'kategori' => 'required|in:foto,video',
             'tanggal' => 'required|date',
-            'foto' => $id
-                ? 'nullable|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi,mkv|max:20480'
-                : 'required|file|mimes:jpg,jpeg,png,webp,mp4,mov,avi,mkv|max:20480',
+
+            'foto_file' => $request->kategori === 'foto' && !$id
+                ? 'required|image|mimes:jpg,jpeg,png,webp|max:20480'
+                : ($request->kategori === 'foto'
+                    ? 'nullable|image|mimes:jpg,jpeg,png,webp|max:20480'
+                    : 'nullable'),
+
+            'video_file' => $request->kategori === 'video' && !$id
+                ? 'required|file|mimes:mp4,mov,avi,mkv|max:20480'
+                : ($request->kategori === 'video'
+                    ? 'nullable|file|mimes:mp4,mov,avi,mkv|max:20480'
+                    : 'nullable'),
         ], [
             'judul.required' => 'Judul galeri wajib diisi.',
             'keterangan.required' => 'Keterangan wajib diisi.',
@@ -78,37 +87,87 @@ class GaleriController extends Controller
             'kategori.in' => 'Kategori harus berupa foto atau video.',
             'tanggal.required' => 'Tanggal wajib diisi.',
             'tanggal.date' => 'Format tanggal tidak valid.',
-            'foto.required' => 'File foto atau video wajib diupload.',
-            'foto.file' => 'File yang diupload tidak valid.',
-            'foto.mimes' => 'File harus berupa JPG, JPEG, PNG, WEBP, MP4, MOV, AVI, atau MKV.',
-            'foto.max' => 'Ukuran file maksimal 20MB.',
+
+            'foto_file.required' => 'Foto wajib dipilih.',
+            'foto_file.image' => 'File harus berupa gambar.',
+            'foto_file.mimes' => 'Foto harus berupa JPG, JPEG, PNG, atau WEBP.',
+            'foto_file.max' => 'Ukuran foto maksimal 20 MB.',
+
+            'video_file.required' => 'Video wajib dipilih.',
+            'video_file.file' => 'File video tidak valid.',
+            'video_file.mimes' => 'Video harus berupa MP4, MOV, AVI, atau MKV.',
+            'video_file.max' => 'Ukuran video maksimal 20 MB.',
         ]);
+
+        $kategoriLama = $galeri->kategori;
 
         $galeri->judul = $request->judul;
         $galeri->keterangan = $request->keterangan;
         $galeri->kategori = $request->kategori;
         $galeri->tanggal = $request->tanggal;
 
-        if ($request->hasFile('foto')) {
-            if (
-                $galeri->foto &&
-                file_exists(public_path('uploads/galeri/' . $galeri->foto))
-            ) {
-                unlink(public_path('uploads/galeri/' . $galeri->foto));
+        /*
+        |--------------------------------------------------------------------------
+        | FOTO
+        |--------------------------------------------------------------------------
+        */
+        if ($request->kategori === 'foto') {
+
+            if ($request->hasFile('foto_file')) {
+
+                if (
+                    $galeri->foto &&
+                    file_exists(public_path('uploads/galeri/' . $galeri->foto))
+                ) {
+                    unlink(public_path('uploads/galeri/' . $galeri->foto));
+                }
+
+                $file = $request->file('foto_file');
+
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                $folder = public_path('uploads/galeri');
+
+                if (!file_exists($folder)) {
+                    mkdir($folder, 0755, true);
+                }
+
+                $file->move($folder, $fileName);
+
+                $galeri->foto = $fileName;
             }
+        }
 
-            $file = $request->file('foto');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+        /*
+        |--------------------------------------------------------------------------
+        | VIDEO
+        |--------------------------------------------------------------------------
+        */
+        if ($request->kategori === 'video') {
 
-            $folder = public_path('uploads/galeri');
+            if ($request->hasFile('video_file')) {
 
-            if (!file_exists($folder)) {
-                mkdir($folder, 0755, true);
+                if (
+                    $galeri->foto &&
+                    file_exists(public_path('uploads/galeri/' . $galeri->foto))
+                ) {
+                    unlink(public_path('uploads/galeri/' . $galeri->foto));
+                }
+
+                $file = $request->file('video_file');
+
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                $folder = public_path('uploads/galeri');
+
+                if (!file_exists($folder)) {
+                    mkdir($folder, 0755, true);
+                }
+
+                $file->move($folder, $fileName);
+
+                $galeri->foto = $fileName;
             }
-
-            $file->move($folder, $fileName);
-
-            $galeri->foto = $fileName;
         }
 
         $galeri->save();
@@ -163,10 +222,25 @@ class GaleriController extends Controller
             ->with('success', 'Data galeri berhasil dihapus.');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | PUBLIC GALERI
+    |--------------------------------------------------------------------------
+    */
+
     public function publicGaleri()
     {
-        $galeris = Galeri::orderBy('id', 'desc')->get();
+        $sekolah = \App\Models\ProfileSekolah::first();
+        $galeri = Galeri::latest()->get();
 
-        return view('public.galeri', compact('galeris'));
+        return view('public.galeri', compact('sekolah', 'galeri'));
+    }
+
+    public function publicShow($id)
+    {
+        $sekolah = \App\Models\ProfileSekolah::first();
+        $galeri = Galeri::findOrFail($id);
+
+        return view('public.galeri-detail', compact('sekolah', 'galeri'));
     }
 }

@@ -12,6 +12,17 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
+
+    // PUBLIC WEBSITE
+    Route::get('/guru', [GuruController::class, 'publicGuru'])->name('public.guru');
+    Route::get('/guru/{id}', [GuruController::class, 'publicShow'])->name('public.guru.show');
+    Route::get('/berita', [BeritaController::class, 'publicBerita'])->name('public.berita');
+    Route::get('/berita/{id}', [BeritaController::class, 'publicShow'])->name('public.berita.show');
+    Route::get('/galeri', [GaleriController::class, 'publicGaleri'])->name('public.galeri');
+    Route::get('/galeri/{id}', [GaleriController::class, 'publicShow'])->name('public.galeri.show');
+    Route::get('/ekstrakurikuler', [EkstrakulikulerController::class, 'publicEkstrakulikuler'])->name('public.ekstrakulikuler');
+    Route::get('/ekstrakurikuler/{id}', [EkstrakulikulerController::class, 'publicShow'])->name('public.ekstrakulikuler.show');
+
     Route::get('/', [DashboardController::class, 'publicDashboard'])->name('public.dashboard');
     Route::get('/berita', [BeritaController::class, 'publicBerita'])->name('public.berita');
     Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'publicEkstrakurikuler'])->name('public.ekstrakulikuler');
@@ -25,32 +36,21 @@ use App\Http\Controllers\UserController;
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::prefix('admin')->middleware('auth.check')->group(function () {
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::prefix('profil-sekolah')->group(function () {
-
-    // Lihat profile - Admin & Operator
-    Route::get('/', [ProfileSekolahController::class, 'index'])
-        ->name('admin.profil-sekolah')
-        ->middleware('auth.check');
-
-    // Edit profile - Admin saja
-    Route::get('/form', [ProfileSekolahController::class, 'form'])
-        ->name('admin.profil-sekolah.form')
-        ->middleware(['auth.check', 'admin']);
-
-    // Simpan perubahan - Admin saja
-    Route::post('/save', [ProfileSekolahController::class, 'save'])
-        ->name('admin.profil-sekolah.save')
-        ->middleware(['auth.check', 'admin']);
-});
+        // Lihat profile - Admin & Operator
+        Route::get('/', [ProfileSekolahController::class, 'index'])->name('admin.profil-sekolah')->middleware('auth.check');
+        // Edit profile - Admin saja
+        Route::get('/form', [ProfileSekolahController::class, 'form'])->name('admin.profil-sekolah.form')->middleware(['auth.check', 'admin']);
+        // Simpan perubahan - Admin saja
+        Route::post('/save', [ProfileSekolahController::class, 'save'])->name('admin.profil-sekolah.save')->middleware(['auth.check', 'admin']);
+    });
 
     Route::prefix('berita')->group(function () {
         // Admin & Operator
         Route::get('/', [BeritaController::class, 'index'])->name('admin.berita');
         Route::get('/show/{id}', [BeritaController::class, 'show'])->name('admin.berita.show');
-
         // Admin saja
         Route::middleware('admin')->group(function () {
             Route::get('/add-edit/{id?}', [BeritaController::class, 'addEdit'])->name('admin.berita.addEdit');
@@ -63,7 +63,6 @@ use App\Http\Controllers\UserController;
         // Admin & Operator
         Route::get('/', [EkstrakulikulerController::class, 'index'])->name('admin.ekstrakulikuler');
         Route::get('/show/{id}', [EkstrakulikulerController::class, 'show'])->name('admin.ekstrakulikuler.show');
-
         // Admin saja
         Route::middleware('admin')->group(function () {
             Route::get('/add-edit/{id?}', [EkstrakulikulerController::class, 'addEdit'])->name('admin.ekstrakulikuler.addEdit');
@@ -78,7 +77,6 @@ use App\Http\Controllers\UserController;
         // Admin & Operator
         Route::get('/', [GaleriController::class, 'index'])->name('admin.galeri');
         Route::get('/show/{id}', [GaleriController::class, 'show'])->name('admin.galeri.show');
-
         // Admin saja
         Route::middleware('admin')->group(function () {
             Route::get('/add-edit/{id?}', [GaleriController::class, 'addEdit'])->name('admin.galeri.addEdit');

@@ -149,10 +149,19 @@ class BeritaController extends Controller
             ->with('success', 'Berita berhasil dihapus.');
     }
 
-    public function publicBerita()
+   public function publicBerita()
     {
-        $beritas = Berita::orderBy('id', 'desc')->get();
+        $sekolah = \App\Models\ProfileSekolah::first();
+        $berita = Berita::latest('tanggal')->get();
 
-        return view('public.berita', compact('beritas'));
+        return view('public.berita', compact('sekolah', 'berita'));
+    }
+
+    public function publicShow($id)
+    {
+        $sekolah = \App\Models\ProfileSekolah::first();
+        $berita = Berita::findOrFail($id);
+
+        return view('public.berita-detail', compact('sekolah', 'berita'));
     }
 }

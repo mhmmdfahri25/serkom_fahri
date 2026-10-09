@@ -123,7 +123,7 @@ $(document).ready(function () {
         ],
         language: {
             lengthMenu: "Show _MENU_ entries",
-            search: "Search:",
+            search: "Cari:",
             zeroRecords: "No matching records found",
             info: "Showing _START_ to _END_ of _TOTAL_ entries",
             infoEmpty: "Showing 0 to 0 of 0 entries",

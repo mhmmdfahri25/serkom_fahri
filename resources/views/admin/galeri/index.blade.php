@@ -52,9 +52,10 @@
 
                                 <div class="position-relative" style="height: 200px; overflow: hidden;">
 
-                                    @if($galeri->foto && $galeri->kategori == 'foto')
+                                    {{-- FOTO --}}
+                                    @if($galeri->kategori == 'foto')
 
-                                        @if(file_exists(public_path('uploads/galeri/' . $galeri->foto)))
+                                        @if($galeri->foto && file_exists(public_path('uploads/galeri/' . $galeri->foto)))
 
                                             <img
                                                 src="{{ asset('uploads/galeri/' . $galeri->foto) }}"
@@ -70,29 +71,29 @@
 
                                         @endif
 
-                                    @elseif($galeri->foto && $galeri->kategori == 'video')
+                                   {{-- VIDEO --}}
+                                        @elseif($galeri->kategori == 'video')
 
-                                        @if(file_exists(public_path('uploads/galeri/' . $galeri->foto)))
+                                            @if($galeri->foto && file_exists(public_path('uploads/galeri/' . $galeri->foto)))
 
-                                            <video
-                                                class="w-100 h-100"
-                                                style="object-fit: cover;"
-                                                controls>
+                                                <video
+                                                    class="w-100 h-100"
+                                                    style="object-fit: cover;"
+                                                    controls>
 
-                                                <source src="{{ asset('uploads/galeri/' . $galeri->foto) }}">
+                                                    <source src="{{ asset('uploads/galeri/' . $galeri->foto) }}">
 
-                                                Browser tidak mendukung video.
+                                                    Browser tidak mendukung video.
 
-                                            </video>
+                                                </video>
 
-                                        @else
+                                            @else
 
-                                            <div class="d-flex align-items-center justify-content-center h-100 bg-light">
-                                                <i class="mdi mdi-video-off mdi-48px text-muted"></i>
-                                            </div>
+                                                <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                                    <i class="mdi mdi-video-off mdi-48px text-muted"></i>
+                                                </div>
 
-                                        @endif
-
+                                            @endif
                                     @else
 
                                         <div class="d-flex align-items-center justify-content-center h-100 bg-light">
@@ -101,6 +102,7 @@
 
                                     @endif
 
+                                    {{-- LABEL --}}
                                     <div style="position: absolute; top: 10px; left: 10px;">
 
                                         @if($galeri->kategori == 'foto')

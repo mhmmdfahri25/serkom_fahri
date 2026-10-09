@@ -7,20 +7,36 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/jquery-bar-rating/css-stars.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+    <title>
+        {{ $sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA' }}
+    </title>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet"
+          href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ asset('assets/vendors/jquery-bar-rating/css-stars.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+
+    <link rel="stylesheet"
+          href="{{ asset('assets/css/demo_1/style.css') }}">
 
     <link rel="shortcut icon"
           href="{{ $sekolah && $sekolah->logo
@@ -28,7 +44,9 @@
               : asset('assets/images/logosman1samarinda.png') }}">
 
     <style>
+
         /* SIDEBAR */
+
         #sidebar {
             background: #ffffff !important;
             border-right: 1px solid #e9ecef;
@@ -98,6 +116,7 @@
         }
 
         /* LOGO SIDEBAR */
+
         #sidebar .sidebar-brand-logo {
             display: block;
             margin: 0 auto;
@@ -119,6 +138,7 @@
         }
 
         /* LOGOUT */
+
         #sidebar .nav > .nav-item:last-child {
             margin-top: 8px;
         }
@@ -132,6 +152,7 @@
         }
 
         /* SAAT SIDEBAR DI-MINIMIZE */
+
         .sidebar-icon-only #sidebar .nav > .nav-item {
             margin-left: 8px;
             margin-right: 8px;
@@ -157,7 +178,9 @@
         .sidebar-icon-only #sidebar .nav > .nav-item > .nav-link .menu-icon {
             margin-right: 0;
         }
+
     </style>
+
 </head>
 
 <body>
@@ -165,11 +188,14 @@
 <div class="container-scroller">
 
     <!-- SIDEBAR -->
-    <nav class="sidebar sidebar-offcanvas fixed" id="sidebar">
+
+    <nav class="sidebar sidebar-offcanvas fixed"
+         id="sidebar">
 
         <ul class="nav">
 
             <!-- LOGO SEKOLAH -->
+
             <li class="nav-item pt-3">
 
                 <div class="nav-link d-block">
@@ -196,6 +222,7 @@
             </li>
 
             <!-- DASHBOARD -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
@@ -212,6 +239,7 @@
             </li>
 
             <!-- PROFILE SEKOLAH -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.profil-sekolah*') ? 'active' : '' }}"
@@ -228,6 +256,7 @@
             </li>
 
             <!-- BERITA -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.berita*') ? 'active' : '' }}"
@@ -244,6 +273,7 @@
             </li>
 
             <!-- EKSTRAKULIKULER -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.ekstrakulikuler*') ? 'active' : '' }}"
@@ -260,6 +290,7 @@
             </li>
 
             <!-- GALERI -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.galeri*') ? 'active' : '' }}"
@@ -276,6 +307,7 @@
             </li>
 
             <!-- GURU -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.guru*') ? 'active' : '' }}"
@@ -292,6 +324,7 @@
             </li>
 
             <!-- SISWA -->
+
             <li class="nav-item">
 
                 <a class="nav-link {{ request()->routeIs('admin.siswa*') ? 'active' : '' }}"
@@ -307,7 +340,8 @@
 
             </li>
 
-            <!-- USER -->
+            <!-- USER HANYA UNTUK ADMIN -->
+
             @if(auth()->user()->role === 'admin')
 
                 <li class="nav-item">
@@ -327,43 +361,23 @@
 
             @endif
 
-            <!-- LOGOUT -->
-            <li class="nav-item">
-
-                <form action="{{ route('logout') }}"
-                      method="POST"
-                      class="m-0">
-
-                    @csrf
-
-                    <button type="submit"
-                            class="nav-link border-0 bg-transparent w-100 text-left">
-
-                        <i class="mdi mdi-logout menu-icon"></i>
-
-                        <span class="menu-title">
-                            Logout
-                        </span>
-
-                    </button>
-
-                </form>
-
-            </li>
 
         </ul>
 
     </nav>
 
     <!-- PAGE BODY -->
+
     <div class="container-fluid page-body-wrapper">
 
         <!-- SETTINGS -->
+
         <div id="settings-trigger">
             <i class="mdi mdi-settings"></i>
         </div>
 
-        <div id="theme-settings" class="settings-panel">
+        <div id="theme-settings"
+             class="settings-panel">
 
             <i class="settings-close mdi mdi-close"></i>
 
@@ -414,6 +428,7 @@
         </div>
 
         <!-- NAVBAR -->
+
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
 
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -441,6 +456,7 @@
                 </div>
 
                 <!-- NAVBAR LEFT -->
+
                 <ul class="navbar-nav">
 
                     <li class="nav-item dropdown">
@@ -473,66 +489,46 @@
                 </ul>
 
                 <!-- NAVBAR RIGHT -->
+
                 <ul class="navbar-nav navbar-nav-right">
+
+                    <!-- NAMA USER -->
 
                     <li class="nav-item nav-logout d-none d-md-block mr-3">
 
-                        <a class="nav-link" href="#">
-                            Status
-                        </a>
+                        <span class="nav-link">
+
+                            <i class="mdi mdi-account-circle"></i>
+
+                            {{ auth()->user()->nama }}
+
+                        </span>
 
                     </li>
 
-                    <li class="nav-item nav-logout d-none d-md-block">
+                    <!-- ROLE -->
 
-                        <button class="btn btn-sm btn-danger">
+                    <li class="nav-item nav-logout d-none d-md-block mr-3">
 
-                            {{ session('admin_nama', 'Admin') }}
+                        @if(auth()->user()->role === 'admin')
 
-                        </button>
+                            <span class="badge badge-danger">
+                                Admin
+                            </span>
 
-                    </li>
+                        @else
 
-                    <li class="nav-item nav-profile dropdown d-none d-md-block">
+                            <span class="badge badge-info">
+                                Operator
+                            </span>
 
-                        <a class="nav-link dropdown-toggle"
-                           id="profileDropdown"
-                           href="#"
-                           data-toggle="dropdown"
-                           aria-expanded="false">
-
-                            <div class="nav-profile-text">
-                                Indonesia
-                            </div>
-
-                        </a>
-
-                        <div class="dropdown-menu center navbar-dropdown"
-                             aria-labelledby="profileDropdown">
-
-                            <a class="dropdown-item" href="#">
-
-                                <i class="flag-icon flag-icon-id mr-3"></i>
-
-                                Indonesia
-
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a class="dropdown-item" href="#">
-
-                                <i class="flag-icon flag-icon-us mr-3"></i>
-
-                                English
-
-                            </a>
-
-                        </div>
+                        @endif
 
                     </li>
 
-                    <li class="nav-item nav-logout d-none d-lg-block">
+                    <!-- HOME -->
+
+                    <li class="nav-item nav-logout d-none d-lg-block mr-2">
 
                         <a class="nav-link"
                            href="{{ route('admin.dashboard') }}">
@@ -543,9 +539,33 @@
 
                     </li>
 
+                    <!-- LOGOUT -->
+
+                    <li class="nav-item nav-logout d-none d-md-block">
+
+                        <form action="{{ route('logout') }}"
+                              method="POST"
+                              class="m-0">
+
+                            @csrf
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-danger">
+
+                                <i class="mdi mdi-logout"></i>
+
+                                Logout
+
+                            </button>
+
+                        </form>
+
+                    </li>
+
                 </ul>
 
                 <!-- MOBILE MENU -->
+
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
                         type="button"
                         data-toggle="offcanvas">
@@ -559,6 +579,7 @@
         </nav>
 
         <!-- CONTENT -->
+
         <div class="main-panel">
 
             <div class="content-wrapper">
@@ -574,24 +595,39 @@
 </div>
 
 <!-- JAVASCRIPT -->
+
 <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+
 <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
 <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
 
 @stack('scripts')
 
 <script src="{{ asset('assets/vendors/jquery-bar-rating/jquery.barrating.min.js') }}"></script>
+
 <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
+
 <script src="{{ asset('assets/vendors/flot/jquery.flot.js') }}"></script>
+
 <script src="{{ asset('assets/vendors/flot/jquery.flot.resize.js') }}"></script>
+
 <script src="{{ asset('assets/vendors/flot/jquery.flot.categories.js') }}"></script>
+
 <script src="{{ asset('assets/vendors/flot/jquery.flot.fillbetween.js') }}"></script>
+
 <script src="{{ asset('assets/vendors/flot/jquery.flot.stack.js') }}"></script>
+
 <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
+
 <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
+
 <script src="{{ asset('assets/js/misc.js') }}"></script>
+
 <script src="{{ asset('assets/js/settings.js') }}"></script>
+
 <script src="{{ asset('assets/js/todolist.js') }}"></script>
+
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
 </body>
