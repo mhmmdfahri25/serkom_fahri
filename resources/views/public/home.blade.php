@@ -299,7 +299,9 @@
         color: #64748b;
     }
 
-    .profile-info-item strong { color: #172554; }
+    .profile-info-item strong {
+         color: #172554;
+    }
 
     /* VISI MISI */
     .vision-card {
@@ -1074,9 +1076,12 @@
                             </small>
                             <strong>{{ $sekolah->kontak ?? '-' }}</strong>
                         </div>
-
                     </div>
-
+                    {{-- TAMBAHAN TOMBOL LIHAT SELENGKAPNYA --}}
+                     <div class="mt-3"> <a href="{{ route('public.profile') }}" class="btn btn-primary">
+                         <i class="bi bi-arrow-right-circle"></i>
+                          Lihat Selengkapnya </a>
+                     </div>
                 </div>
             </div>
 

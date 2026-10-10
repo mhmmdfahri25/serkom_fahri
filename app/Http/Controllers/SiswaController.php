@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class SiswaController extends Controller
 {
@@ -135,5 +136,14 @@ class SiswaController extends Controller
         return redirect()
             ->route('admin.siswa.index')
             ->with('success', 'Data siswa berhasil dihapus.');
+    }
+
+    public function publicSiswa()
+    {
+        $sekolah = \App\Models\ProfileSekolah::first();
+
+        $siswa = \App\Models\Siswa::latest()->get();
+
+        return view('public.siswa', compact('sekolah', 'siswa'));
     }
 }

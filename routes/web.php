@@ -25,7 +25,7 @@ use App\Http\Controllers\UserController;
 
     Route::get('/', [DashboardController::class, 'publicDashboard'])->name('public.dashboard');
     Route::get('/berita', [BeritaController::class, 'publicBerita'])->name('public.berita');
-    Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'publicEkstrakurikuler'])->name('public.ekstrakulikuler');
+    Route::get('/ekstrakulikuler', [EkstrakulikulerController::class, 'publicEkstrakulikuler'])->name('public.ekstrakulikuler');
     Route::get('/galeri', [GaleriController::class, 'publicGaleri'])->name('public.galeri');
     Route::get('/guru', [GuruController::class, 'publicGuru'])->name('public.guru');
     Route::get('/siswa', [SiswaController::class, 'publicSiswa'])->name('public.siswa');

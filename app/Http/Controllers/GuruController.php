@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class GuruController extends Controller
 {
@@ -137,7 +138,7 @@ class GuruController extends Controller
     public function publicGuru()
     {
         $sekolah = \App\Models\ProfileSekolah::first();
-        $guru = Guru::latest()->get();
+        $guru = Guru::latest()->paginate(6);
 
         return view('public.guru', compact('sekolah', 'guru'));
     }

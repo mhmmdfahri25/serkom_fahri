@@ -1,30 +1,26 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-return new class extends Migration
+use Illuminate\Database\Eloquent\Model;
+
+class Berita extends Model
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('berita', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->text('isi');
-            $table->date('tanggal');
-            $table->string('foto')->nullable();
-        });
-    }
+    protected $table = 'berita';
+    protected $primaryKey = 'id_berita';
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public $timestamps = false;
+
+    protected $fillable = [
+        'judul',
+        'isi',
+        'tanggal',
+        'foto',
+        'id_user',
+    ];
+
+    public function user()
     {
-        Schema::dropIfExists('berita');
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
-};
+}

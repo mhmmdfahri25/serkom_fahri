@@ -107,8 +107,10 @@ class ProfileSekolahController extends Controller
 
     public function publicProfile()
     {
-        $profileSekolah = ProfileSekolah::first();
+       $profileSekolah = ProfileSekolah::first();
 
-        return view('public.profile', compact('profileSekolah'));
+        $sekolah = $profileSekolah;
+
+        return view('public.profile', compact('profileSekolah', 'sekolah'));
     }
 }

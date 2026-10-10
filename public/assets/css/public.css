@@ -1,0 +1,1103 @@
+
+/* ========================================
+   CSS UMUM WEBSITE SEKOLAH
+======================================== */
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
+}
+
+/* ========================================
+   NAVBAR
+======================================== */
+
+.main-navbar {
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #172554 45%,
+        #1d4ed8 100%
+    );
+    padding: 12px 0;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, .22);
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.school-brand {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+}
+
+.school-logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    padding: 4px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .95);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .18);
+    flex-shrink: 0;
+}
+
+.school-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: .2px;
+}
+
+.school-subtitle {
+    margin-top: 3px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, .70);
+}
+
+/* ========================================
+   MENU NAVIGASI
+======================================== */
+
+.main-navbar .navbar-nav {
+    gap: 3px;
+}
+
+.main-navbar .nav-link {
+    position: relative;
+    color: rgba(255, 255, 255, .82);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 14px;
+    margin: 0 1px;
+    border-radius: 10px;
+    transition: background .2s ease, color .2s ease;
+}
+
+.main-navbar .nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, .10);
+}
+
+.main-navbar .nav-link.active {
+    color: #fff;
+    background: rgba(255, 255, 255, .14);
+    font-weight: 800;
+}
+
+.main-navbar .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 3px;
+    height: 3px;
+    background: #60a5fa;
+    border-radius: 10px;
+}
+
+/* ========================================
+   TOGGLE MENU MOBILE
+======================================== */
+
+.main-navbar .navbar-toggler {
+    border: 1px solid rgba(255, 255, 255, .35);
+    padding: 7px 10px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .08);
+}
+
+.main-navbar .navbar-toggler:focus {
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, .25);
+}
+
+.main-navbar .navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* ========================================
+   KONTEN DAN SECTION
+======================================== */
+
+main {
+    padding-top: 82px;
+    min-height: 70vh;
+}
+
+.section-padding {
+    padding: 90px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title .small-title {
+    color: #2563eb;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.section-title h2 {
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.section-title p {
+    color: #64748b;
+    max-width: 700px;
+    margin: auto;
+}
+
+/* ========================================
+   RESPONSIVE TABLET DAN MOBILE
+======================================== */
+
+@media (max-width: 991px) {
+    .main-navbar {
+        padding: 10px 0;
+    }
+
+    .school-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .school-name {
+        font-size: 15px;
+    }
+
+    .school-subtitle {
+        font-size: 11px;
+    }
+
+    .main-navbar .navbar-collapse {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 15px;
+        background: rgba(15, 23, 42, .95);
+        border: 1px solid rgba(255, 255, 255, .10);
+    }
+
+    .main-navbar .navbar-nav {
+        padding-top: 0;
+        gap: 3px;
+    }
+
+    .main-navbar .nav-link {
+        margin: 2px 0;
+        padding: 11px 14px;
+    }
+
+    .main-navbar .nav-link.active::after {
+        display: none;
+    }
+
+    main {
+        padding-top: 72px;
+    }
+}
+
+@media (max-width: 575px) {
+    .school-logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    .school-name {
+        font-size: 14px;
+    }
+
+    .school-subtitle {
+        font-size: 10px;
+    }
+}
+
+
+
+/* ========================================
+   HOME - PENGATURAN UMUM
+======================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+section {
+    scroll-margin-top: 90px;
+}
+
+.section-padding {
+    padding: 90px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title .badge-title {
+    display: inline-block;
+    background: #e8f0ff;
+    color: #0d6efd;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.section-title h2 {
+    color: #172b4d;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.section-title p {
+    color: #6c757d;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+/* ========================================
+   HERO CAROUSEL
+======================================== */
+
+.hero-carousel,
+.hero-slide {
+    position: relative;
+    width: 100%;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(4, 20, 45, .88),
+        rgba(4, 20, 45, .58),
+        rgba(4, 20, 45, .20)
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 60px;
+    padding-bottom: 80px;
+    color: #fff;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .35);
+    padding: 9px 18px;
+    border-radius: 30px;
+    margin-bottom: 22px;
+    font-size: 14px;
+}
+
+.hero-content h1 {
+    max-width: 800px;
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1.2;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.hero-content h1 span {
+    display: block;
+    color: #ffc107;
+}
+
+.hero-content p {
+    max-width: 650px;
+    font-size: 17px;
+    line-height: 1.9;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, .92);
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hero-buttons .btn {
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.hero-carousel .carousel-control-prev,
+.hero-carousel .carousel-control-next {
+    z-index: 3;
+    width: 8%;
+}
+
+.hero-carousel .carousel-indicators {
+    z-index: 4;
+}
+
+/* ========================================
+   STATISTIK SEKOLAH
+======================================== */
+
+.stats-section {
+    position: relative;
+    z-index: 5;
+    margin-top: -45px;
+    padding-bottom: 30px;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.stats-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 25px 20px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(20, 45, 85, .10);
+    border: 1px solid #edf0f5;
+}
+
+.stats-icon {
+    flex-shrink: 0;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf2ff;
+    color: #0d6efd;
+    border-radius: 12px;
+    font-size: 27px;
+}
+
+.stats-info h3 {
+    margin: 0 0 5px;
+    color: #172b4d;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.stats-info p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* ========================================
+   PROFIL SEKOLAH
+======================================== */
+
+.profile-section {
+    background: #fff;
+}
+
+.profile-image {
+    display: block;
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(20, 45, 85, .12);
+}
+
+.profile-content h2 {
+    color: #172b4d;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.profile-content > p {
+    color: #6c757d;
+    line-height: 1.9;
+    margin-bottom: 25px;
+}
+
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.profile-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 16px;
+    background: #f7f9fc;
+    border-radius: 10px;
+    border: 1px solid #edf0f5;
+    overflow-wrap: anywhere;
+}
+
+.profile-info-item small {
+    color: #6c757d;
+}
+
+.profile-info-item strong {
+    color: #172b4d;
+    font-size: 14px;
+}
+
+/* ========================================
+   VISI DAN MISI
+======================================== */
+
+.vision-card {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 35px;
+    background: #f7f9fc;
+    border: 1px solid #e9edf5;
+    border-radius: 16px;
+}
+
+.vision-card h3 {
+    color: #172b4d;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.vision-card p {
+    color: #6c757d;
+    line-height: 1.9;
+    margin-bottom: 0;
+    white-space: pre-line;
+}
+
+/* ========================================
+   KARTU GURU
+======================================== */
+
+.guru-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #edf0f5;
+    border-radius: 15px;
+    box-shadow: 0 7px 25px rgba(20, 45, 85, .08);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.guru-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(20, 45, 85, .14);
+}
+
+.guru-photo {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: center top;
+    background: #f0f3f8;
+}
+
+.guru-content {
+    padding: 22px;
+}
+
+.guru-content h5 {
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.guru-content p {
+    color: #6c757d;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+    margin-bottom: 5px;
+}
+
+/* ========================================
+   BAGIAN SISWA
+======================================== */
+
+.student-section {
+    background: #f7f9fc;
+}
+
+.student-card {
+    height: 100%;
+    padding: 35px 25px;
+    background: #fff;
+    border: 1px solid #edf0f5;
+    border-radius: 15px;
+    box-shadow: 0 7px 25px rgba(20, 45, 85, .07);
+}
+
+.student-card h4 {
+    color: #172b4d;
+    font-size: 38px;
+    font-weight: 800;
+}
+
+.student-card p {
+    color: #6c757d;
+    line-height: 1.8;
+}
+
+/* ========================================
+   KARTU BERITA
+======================================== */
+
+.news-card {
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #edf0f5;
+    border-radius: 14px;
+    box-shadow: 0 7px 25px rgba(20, 45, 85, .07);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 32px rgba(20, 45, 85, .13);
+}
+
+.news-image {
+    display: block;
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 22px;
+}
+
+.news-date {
+    color: #0d6efd;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.news-content h5 {
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.news-content p {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+/* ========================================
+   GALERI SEKOLAH
+======================================== */
+
+.gallery-section {
+    background: #f7f9fc;
+}
+
+.gallery-card {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #e9edf5;
+}
+
+.gallery-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s ease;
+}
+
+.gallery-card:hover img {
+    transform: scale(1.08);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px;
+    color: #fff;
+    background: linear-gradient(
+        to top,
+        rgba(4, 20, 45, .88),
+        rgba(4, 20, 45, .05)
+    );
+}
+
+.gallery-overlay h5 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.gallery-overlay small {
+    color: rgba(255, 255, 255, .85);
+}
+
+/* ========================================
+   EKSTRAKURIKULER
+======================================== */
+
+.extra-card {
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #edf0f5;
+    border-radius: 14px;
+    box-shadow: 0 7px 25px rgba(20, 45, 85, .07);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.extra-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 32px rgba(20, 45, 85, .13);
+}
+
+.extra-image {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.extra-content {
+    padding: 22px;
+}
+
+.extra-content h5 {
+    color: #172b4d;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.extra-content p {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+/* ========================================
+   TOMBOL LIHAT SEMUA
+======================================== */
+
+.view-all {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 24px;
+    border: 1px solid #0d6efd;
+    border-radius: 8px;
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .25s ease, transform .25s ease;
+}
+
+.view-all-btn:hover {
+    background: #0b5ed7;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.site-footer {
+    padding: 65px 0 0;
+    background: #101d33;
+    color: rgba(255, 255, 255, .78);
+}
+
+.site-footer h5,
+.site-footer h6 {
+    color: #fff;
+    font-weight: 700;
+}
+
+.site-footer h6 {
+    margin-bottom: 22px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-logo {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    padding: 5px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.footer-brand h5 {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.footer-brand p {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.site-footer .col-lg-5 > p {
+    line-height: 1.9;
+}
+
+.footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, .75);
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.footer-links a:hover {
+    color: #ffc107;
+}
+
+.footer-contact {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 17px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.footer-contact i {
+    color: #ffc107;
+    font-size: 18px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .10);
+    color: #fff;
+    text-decoration: none;
+    transition: background .2s ease;
+}
+
+.footer-social a:hover {
+    background: #0d6efd;
+}
+
+.footer-bottom {
+    margin-top: 45px;
+    padding: 22px 0;
+    border-top: 1px solid rgba(255, 255, 255, .13);
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* ========================================
+   ANIMASI SCROLL
+======================================== */
+
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity .7s ease, transform .7s ease;
+}
+
+.scroll-animate.from-left {
+    transform: translateX(-35px);
+}
+
+.scroll-animate.from-right {
+    transform: translateX(35px);
+}
+
+.scroll-animate.zoom {
+    transform: scale(.94);
+}
+
+.scroll-animate.show {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+}
+
+.scroll-delay-1 {
+    transition-delay: .15s;
+}
+
+.scroll-delay-2 {
+    transition-delay: .30s;
+}
+
+.scroll-delay-3 {
+    transition-delay: .45s;
+}
+
+/* ========================================
+   RESPONSIVE TABLET
+======================================== */
+
+@media (max-width: 991.98px) {
+    .hero-carousel,
+    .hero-slide,
+    .hero-content {
+        min-height: 540px;
+    }
+
+    .hero-content {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    .stats-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .section-padding {
+        padding: 70px 0;
+    }
+
+    .profile-image {
+        height: 350px;
+    }
+
+    .section-title h2 {
+        font-size: 30px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE HP
+======================================== */
+
+@media (max-width: 767.98px) {
+    .hero-carousel,
+    .hero-slide,
+    .hero-content {
+        min-height: 520px;
+    }
+
+    .hero-content {
+        padding-top: 60px;
+        padding-bottom: 70px;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+    }
+
+    .hero-content p {
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .stats-section {
+        margin-top: -25px;
+    }
+
+    .stats-container {
+        gap: 12px;
+    }
+
+    .stats-card {
+        padding: 18px 13px;
+        gap: 10px;
+    }
+
+    .stats-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 21px;
+    }
+
+    .stats-info h3 {
+        font-size: 24px;
+    }
+
+    .stats-info p {
+        font-size: 12px;
+    }
+
+    .section-padding {
+        padding: 55px 0;
+    }
+
+    .section-title {
+        margin-bottom: 32px;
+    }
+
+    .section-title h2 {
+        font-size: 27px;
+    }
+
+    .profile-image {
+        height: 300px;
+    }
+
+    .profile-content h2 {
+        font-size: 27px;
+    }
+
+    .profile-info {
+        grid-template-columns: 1fr;
+    }
+
+    .vision-card {
+        padding: 25px 20px;
+    }
+
+    .guru-photo {
+        height: 280px;
+    }
+
+    .news-image {
+        height: 220px;
+    }
+
+    .site-footer {
+        padding-top: 45px;
+    }
+}
+
+@media (max-width: 380px) {
+    .hero-content h1 {
+        font-size: 29px;
+    }
+
+    .stats-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stats-info h3 {
+        font-size: 22px;
+    }
+
+    .footer-brand {
+        align-items: flex-start;
+    }
+
+    .footer-logo {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Kurangi animasi jika pengguna memilih reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .scroll-animate {
+        opacity: 1;
+        transform: none;
+    }
+}
