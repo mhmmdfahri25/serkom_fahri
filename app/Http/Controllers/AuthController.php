@@ -29,7 +29,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('admin.dashboard'))
+            return redirect()->route('admin.dashboard')
                 ->with('success', 'Selamat datang kembali, ' . Auth::user()->nama . '!');
         }
 
