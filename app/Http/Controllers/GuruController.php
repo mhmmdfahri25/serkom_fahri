@@ -138,7 +138,7 @@ class GuruController extends Controller
     public function publicGuru()
     {
         $sekolah = \App\Models\ProfileSekolah::first();
-        $guru = Guru::latest()->paginate(6);
+        $guru = Guru::latest()->get();
 
         return view('public.guru', compact('sekolah', 'guru'));
     }

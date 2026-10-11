@@ -1,4 +1,3 @@
-```blade
 @extends('public.dashboard')
 
 @section('title', 'Guru - ' . ($sekolah->nama_sekolah ?? 'SMAN 1 SAMARINDA'))
@@ -276,6 +275,7 @@
         margin: 0;
         color: #94a9c5;
         font-size: 13px;
+        text-align: center;
     }
 
     /* RESPONSIVE */
@@ -565,8 +565,7 @@
 
         <div class="footer-bottom">
             <p>
-                &copy; {{ date('Y') }} {{ $namaSekolah }}.
-                All rights reserved.
+                &copy; {{ date('Y') }} {{ $namaSekolah }}
             </p>
         </div>
 
