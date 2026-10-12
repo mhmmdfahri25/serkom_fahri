@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -39,7 +40,8 @@
                         <p class="text-muted mb-0">Kelola berita sekolah</p>
                     </div>
 
-                    @if(auth()->check() && auth()->user()->role === 'admin')
+                    {{-- Semua pengguna yang login boleh menambah berita --}}
+                    @if(auth()->check())
                         <a href="{{ route('admin.berita.addEdit') }}"
                            class="btn btn-primary">
                             <i class="mdi mdi-plus"></i>
@@ -111,7 +113,7 @@
                                     {{-- Aksi --}}
                                     <td class="align-middle text-center">
 
-                                        {{-- Detail --}}
+                                        {{-- Semua operator bisa melihat detail --}}
                                         <a href="{{ route('admin.berita.show', [
                                             'id' => \Illuminate\Support\Facades\Crypt::encrypt($berita->getKey())
                                         ]) }}"
@@ -120,7 +122,11 @@
                                             Detail
                                         </a>
 
-                                        @if(auth()->check() && auth()->user()->role === 'admin')
+                                        {{-- Edit dan hapus hanya untuk pemilik atau admin --}}
+                                        @if(auth()->check() && (
+                                            auth()->user()->role === 'admin' ||
+                                            $berita->id_user == auth()->id()
+                                        ))
 
                                             {{-- Edit --}}
                                             <a href="{{ route('admin.berita.addEdit', [

@@ -11,28 +11,9 @@
             <div class="card-body py-4">
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <div>
-                        <span class="badge badge-primary mb-2">
-                            <i class="mdi mdi-view-dashboard mr-1"></i>
-                            ADMIN PANEL
-                        </span>
-
-                        <h3 class="font-weight-bold mb-1">
-                            Dashboard
-                        </h3>
-
-                        <p class="text-muted mb-0">
-                            Selamat datang di panel administrasi
-                            <strong>SMAN 1 SAMARINDA</strong>.
-                        </p>
-                    </div>
-
-                    <div class="mt-3 mt-md-0">
-                        <a href="{{ route('public.dashboard') }}"
-                           target="_blank"
-                           class="btn btn-outline-primary">
-                            <i class="mdi mdi-web mr-1"></i>
-                            Lihat Website
-                        </a>
+                        <h4 class="font-weight-bold mb-1">
+                            Selamat Datang {{ auth()->user()->name }}
+                        </h4>
                     </div>
                 </div>
             </div>

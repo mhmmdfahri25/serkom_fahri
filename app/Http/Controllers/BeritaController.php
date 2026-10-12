@@ -4,11 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 
 class BeritaController extends Controller
 {
+    /**
+     * Admin dapat mengubah semua berita.
+     * Operator hanya dapat mengubah berita miliknya sendiri.
+     */
+    private function beritaYangBolehDiubah()
+    {
+        $user = Auth::user();
+
+        $query = Berita::query();
+
+        if (!$user || $user->role !== 'admin') {
+            $query->where('id_user', Auth::id());
+        }
+
+        return $query;
+    }
+
+    /**
+     * Semua operator dapat melihat semua berita (menggunakan pagination).
+     */
     public function index(Request $request)
     {
         $query = Berita::query();
@@ -23,45 +43,68 @@ class BeritaController extends Controller
             });
         }
 
-        $beritas = $query->orderBy('id', 'desc')->get();
+        // Diubah menggunakan paginate(10) agar lebih optimal
+        $beritas = $query->orderByDesc('id')->paginate(10);
 
         return view('admin.berita.index', [
             'title' => 'Berita',
-            'beritas' => $beritas
+            'beritas' => $beritas,
         ]);
     }
 
+    /**
+     * Form tambah atau edit berita.
+     */
     public function addEdit($id = null)
     {
-        try {
-            $berita = $id
-                ? Berita::findOrFail(Crypt::decrypt($id))
-                : null;
-        } catch (\Exception $e) {
-            return redirect()
-                ->route('admin.berita')
-                ->with('error', 'Data berita tidak ditemukan.');
+        $berita = null;
+
+        if ($id !== null) {
+            try {
+                $idAsli = Crypt::decrypt($id);
+
+                $berita = $this->beritaYangBolehDiubah()
+                    ->findOrFail($idAsli);
+            } catch (\Throwable $e) {
+                return redirect()
+                    ->route('admin.berita')
+                    ->with(
+                        'error',
+                        'Berita tidak ditemukan atau Anda tidak memiliki akses untuk mengeditnya.'
+                    );
+            }
         }
 
         return view('admin.berita.form', [
             'title' => $berita ? 'Edit Berita' : 'Tambah Berita',
-            'berita' => $berita
+            'berita' => $berita,
         ]);
     }
 
+    /**
+     * Simpan berita baru atau perubahan berita.
+     */
     public function save(Request $request, $id = null)
     {
-        if ($id) {
+        $idAsli = null;
+
+        if ($id !== null) {
             try {
-                $id = Crypt::decrypt($id);
-                $berita = Berita::findOrFail($id);
-            } catch (\Exception $e) {
+                $idAsli = Crypt::decrypt($id);
+
+                $berita = $this->beritaYangBolehDiubah()
+                    ->findOrFail($idAsli);
+            } catch (\Throwable $e) {
                 return redirect()
                     ->route('admin.berita')
-                    ->with('error', 'Data berita tidak ditemukan.');
+                    ->with(
+                        'error',
+                        'Berita tidak ditemukan atau Anda tidak memiliki akses untuk mengubahnya.'
+                    );
             }
         } else {
             $berita = new Berita();
+            $berita->id_user = Auth::id();
         }
 
         $request->validate([
@@ -85,19 +128,23 @@ class BeritaController extends Controller
         $berita->tanggal = $request->tanggal;
 
         if ($request->hasFile('foto')) {
-            if ($berita->foto && file_exists(public_path('uploads/berita/' . $berita->foto))) {
-                unlink(public_path('uploads/berita/' . $berita->foto));
-            }
-
-            $foto = $request->file('foto');
-            $namaFoto = time() . '_' . $foto->getClientOriginalName();
             $folder = public_path('uploads/berita');
 
-            if (!file_exists($folder)) {
+            if (!is_dir($folder)) {
                 mkdir($folder, 0755, true);
             }
 
+            if (
+                $berita->foto &&
+                file_exists($folder . DIRECTORY_SEPARATOR . $berita->foto)
+            ) {
+                unlink($folder . DIRECTORY_SEPARATOR . $berita->foto);
+            }
+
+            $foto = $request->file('foto');
+            $namaFoto = time() . '_' . uniqid() . '.' . $foto->extension();
             $foto->move($folder, $namaFoto);
+
             $berita->foto = $namaFoto;
         }
 
@@ -107,17 +154,21 @@ class BeritaController extends Controller
             ->route('admin.berita')
             ->with(
                 'success',
-                $id
+                $idAsli !== null
                     ? 'Berita berhasil diperbarui.'
                     : 'Berita berhasil ditambahkan.'
             );
     }
 
+    /**
+     * Semua operator boleh melihat detail berita.
+     */
     public function show($id)
     {
         try {
-            $berita = Berita::findOrFail(Crypt::decrypt($id));
-        } catch (\Exception $e) {
+            $idAsli = Crypt::decrypt($id);
+            $berita = Berita::findOrFail($idAsli);
+        } catch (\Throwable $e) {
             return redirect()
                 ->route('admin.berita')
                 ->with('error', 'Data berita tidak ditemukan.');
@@ -125,21 +176,33 @@ class BeritaController extends Controller
 
         return view('admin.berita.show', [
             'title' => 'Detail Berita',
-            'berita' => $berita
+            'berita' => $berita,
         ]);
     }
 
+    /**
+     * Hapus hanya berita milik sendiri, kecuali admin.
+     */
     public function destroy($id)
     {
         try {
-            $berita = Berita::findOrFail(Crypt::decrypt($id));
-        } catch (\Exception $e) {
+            $idAsli = Crypt::decrypt($id);
+
+            $berita = $this->beritaYangBolehDiubah()
+                ->findOrFail($idAsli);
+        } catch (\Throwable $e) {
             return redirect()
                 ->route('admin.berita')
-                ->with('error', 'Data berita tidak ditemukan.');
+                ->with(
+                    'error',
+                    'Berita tidak ditemukan atau Anda tidak memiliki akses untuk menghapusnya.'
+                );
         }
 
-        if ($berita->foto && file_exists(public_path('uploads/berita/' . $berita->foto))) {
+        if (
+            $berita->foto &&
+            file_exists(public_path('uploads/berita/' . $berita->foto))
+        ) {
             unlink(public_path('uploads/berita/' . $berita->foto));
         }
 
@@ -150,7 +213,10 @@ class BeritaController extends Controller
             ->with('success', 'Berita berhasil dihapus.');
     }
 
-   public function publicBerita()
+    /**
+     * Daftar berita untuk pengunjung website.
+     */
+    public function publicBerita()
     {
         $sekolah = \App\Models\ProfileSekolah::first();
         $berita = Berita::latest('tanggal')->get();
@@ -158,11 +224,17 @@ class BeritaController extends Controller
         return view('public.berita', compact('sekolah', 'berita'));
     }
 
+    /**
+     * Detail berita untuk pengunjung website.
+     */
     public function publicShow($id)
     {
         $sekolah = \App\Models\ProfileSekolah::first();
         $berita = Berita::findOrFail($id);
 
-        return view('public.berita-detail', compact('sekolah', 'berita'));
+        return view(
+            'public.berita-detail',
+            compact('sekolah', 'berita')
+        );
     }
 }

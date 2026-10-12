@@ -27,7 +27,10 @@ class DashboardController extends Controller
         $jumlahGuru = Guru::count();
         $jumlahSiswa = Siswa::count();
 
-        $beritaTerbaru = Berita::take(5)->get();
+        $beritaTerbaru = Berita::orderByDesc('tanggal')
+            ->orderByDesc('id')
+            ->take(5)
+            ->get();
 
         return view('admin.dashboard', compact(
             'sekolah',

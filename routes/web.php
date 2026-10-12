@@ -47,17 +47,22 @@ use App\Http\Controllers\UserController;
         Route::post('/save', [ProfileSekolahController::class, 'save'])->name('admin.profil-sekolah.save')->middleware(['auth.check', 'admin']);
     });
 
+
     Route::prefix('berita')->group(function () {
-        // Admin & Operator
+
+        // Admin dan operator bisa melihat daftar berita
         Route::get('/', [BeritaController::class, 'index'])->name('admin.berita');
+        // Admin dan operator bisa melihat detail berita
         Route::get('/show/{id}', [BeritaController::class, 'show'])->name('admin.berita.show');
-        // Admin saja
-        Route::middleware('admin')->group(function () {
-            Route::get('/add-edit/{id?}', [BeritaController::class, 'addEdit'])->name('admin.berita.addEdit');
-            Route::post('/save/{id?}', [BeritaController::class, 'save'])->name('admin.berita.save');
-            Route::delete('/delete/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.delete');
-        });
+        // Admin dan operator bisa membuka form tambah/edit
+        Route::get('/add-edit/{id?}', [BeritaController::class, 'addEdit'])->name('admin.berita.addEdit');
+        // Admin dan operator bisa menyimpan berita
+        Route::post('/save/{id?}', [BeritaController::class, 'save'])->name('admin.berita.save');
+        // Admin dan operator bisa mengirim permintaan hapus,
+        // tetapi controller wajib memeriksa kepemilikan berita
+        Route::delete('/delete/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.delete');
     });
+
 
     Route::prefix('ekstrakurikuler')->group(function () {
         // Admin & Operator
