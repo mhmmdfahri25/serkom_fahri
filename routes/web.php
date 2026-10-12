@@ -30,9 +30,10 @@ use App\Http\Controllers\UserController;
     Route::get('/guru', [GuruController::class, 'publicGuru'])->name('public.guru');
     Route::get('/siswa', [SiswaController::class, 'publicSiswa'])->name('public.siswa');
     Route::get('/profile', [ProfileSekolahController::class, 'publicProfile'])->name('public.profile');
+    Route::get('/ujikom', [DashboardController::class, 'publicUjikom'])->name('public.ujikom');
 
     Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/login-proses', [AuthController::class, 'processLogin'])->name('admin.process_login');
+    Route::post('/login-proses', [AuthController::class, 'prosesLogin'])->name('admin.process_login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::prefix('admin')->middleware('auth.check')->group(function () {

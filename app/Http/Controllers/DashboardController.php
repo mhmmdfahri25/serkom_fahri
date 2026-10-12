@@ -112,29 +112,46 @@ class DashboardController extends Controller
         //
     }
     public function publicDashboard()
-{
-    $sekolah = ProfileSekolah::first();
-    $guru = Guru::latest()->get();
-    $siswa = Siswa::latest()->get();
-    $beritaTerbaru = Berita::latest('tanggal')->get();
-    $galeris = Galeri::latest()->get();
-    $ekstrakulikulers = Ekstrakulikuler::latest()->get();
-    $jumlahSiswa = Siswa::count();
-    $jumlahGuru = Guru::count();
-    $jumlahBerita = Berita::count();
-    $jumlahEkstrakulikuler = Ekstrakulikuler::count();
+    {
+        $sekolah = ProfileSekolah::first();
+        $guru = Guru::latest()->get();
+        $siswa = Siswa::latest()->get();
+        $beritaTerbaru = Berita::latest('tanggal')->get();
+        $galeris = Galeri::latest()->get();
+        $ekstrakulikulers = Ekstrakulikuler::latest()->get();
+        $ujikom = [
+            'nama' => 'Ujikom',
+            'deskripsi' => 'Ujikom adalah Ujian Kompetensi Keahlian',
+            'gambar' => asset('assets/img/ujikom.jpg'),
+        ];
+        $jumlahSiswa = Siswa::count();
+        $jumlahGuru = Guru::count();
+        $jumlahBerita = Berita::count();
+        $jumlahEkstrakulikuler = Ekstrakulikuler::count();
 
-    return view('public.home', compact(
-        'sekolah',
-        'guru',
-        'siswa',
-        'beritaTerbaru',
-        'galeris',
-        'ekstrakulikulers',
-        'jumlahSiswa',
-        'jumlahGuru',
-        'jumlahBerita',
-        'jumlahEkstrakulikuler'
-    ));
-}
+        return view('public.home', compact(
+            'sekolah',
+            'guru',
+            'siswa',
+            'beritaTerbaru',
+            'galeris',
+            'ekstrakulikulers',
+            'ujikom',
+            'jumlahSiswa',
+            'jumlahGuru',
+            'jumlahBerita',
+            'jumlahEkstrakulikuler'
+        ));
+    }
+
+    public function publicUjikom()
+    {
+        $sekolah = ProfileSekolah::first();
+        $ujikom = [
+            'nama' => 'Ujikom',
+            'deskripsi' => 'Ujikom adalah Ujian Kompetensi Keahlian'
+        ];
+
+        return view('public.ujikom', compact('sekolah', 'ujikom'));
+    }
 }

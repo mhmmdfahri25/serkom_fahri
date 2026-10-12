@@ -344,6 +344,24 @@
                         </a>
                     </li>
 
+                    {{-- Ujikom --}}
+                    <li class="nav-item">
+                        <a
+                            class="nav-link {{ request()->routeIs('public.ujikom') ? 'active' : '' }}"
+                            href="{{ route('public.ujikom') }}">
+                            Ujikom
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav ms-lg-3 mt-3 mt-lg-0">
+                    <li class="nav-item">
+                        <a
+                            class="btn btn-primary d-block d-lg-inline-block"
+                            href="{{ route('login') }}">
+                            Login
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

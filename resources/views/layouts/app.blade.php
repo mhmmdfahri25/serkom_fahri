@@ -531,7 +531,7 @@
                     <li class="nav-item nav-logout d-none d-lg-block mr-2">
 
                         <a class="nav-link"
-                           href="{{ route('admin.dashboard') }}">
+                           href="{{ route('public.dashboard') }}">
 
                             <i class="mdi mdi-home-circle"></i>
 

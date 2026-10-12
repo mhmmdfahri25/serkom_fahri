@@ -615,5 +615,4 @@
 
     </div>
 </footer>
-
 @endsection
